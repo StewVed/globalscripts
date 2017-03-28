@@ -3,13 +3,17 @@ var zAll = '<span class="B'
   , zImp = zAll + ' Gr">Improvement: </span>'
   , zBug = zAll + ' Re">Bug-Fix: </span>'
   , zDev = zAll + ' Or">Development: </span>'
-  
+
 var globCL =
   '<p class="B C">TODO</p> ' +
   '<ul><li>alter every project to point to the general files, and make them work with them.' +
   '</li></ul>' +
   'If you find a bug, or have a suggestion, please let me know at ' +
   '<a class=ubLink href="https://github.com/StewVed/audiotester/issues" target=_blank>GitHub Issues</a>' +
+  '<hr>' +
+  '<p class="B C">28th March 2017</p> ' +
+  '<ul><li>' + zNew + 'Added input keyboard events and on-screen keyboard dodging from CalorieCalculator, while that project was adapted to use these Global general files.' +
+  '</li></ul>' +
   '<hr>' +
   '<p class="B C">3rd March 2017</p> ' +
   '<ul><li>' + zNew + 'Created general files, that should work with all of my apps, and put it on GitHub.' +

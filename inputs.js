@@ -75,6 +75,9 @@ function keyDown(e) {
       bubbleStop(e);
       document.activeElement.blur();
     }
+    else {
+      keyDownEvents();
+    }
   }
 }
 function keyUp(e) {
@@ -88,6 +91,9 @@ function keyUp(e) {
       }
       anEvent();
     }
+  }
+  else {
+    keyUpEvents
   }
 }
 function mouseDown(e) {

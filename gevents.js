@@ -55,6 +55,30 @@ function resizeCenter(a, b) {
 }
 
 function resize() {
+  //little fix for on-screen keyboards resizing screen space:
+  if (document.activeElement.classList.contains('editEnable')) {
+    //also could double-check by checking that the width hasn't changed:
+    //if (document.body.offsetWidth === window.innerWidth) - if needed...
+
+    /*
+      attempt to keep the entire webapp visible...
+      I will assume that document.body.offsetHeight will be correctly reported.
+    */
+    var zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
+
+    if (zTop < 0) {
+      //make sure that the activeElement is visible.
+      var zParentElem = document.activeElement.parentNode;
+      var xTop = document.activeElement.offsetHeight + document.activeElement.offsetTop;
+      while (zParentElem.id != 'cont') {
+        xTop += zParentElem.offsetTop;
+        zParentElem = document.activeElement.parentNode;
+      }
+    }
+
+    document.getElementById('cont').style.top = zTop + 'px';
+    return;
+  }
   //maybe I should make the game bit a squre, then have the scores bit
   //however amount of space is left? what if the available area is square?
   //regardless, let's begin by finding the smallest size out of length and width:
@@ -137,44 +161,6 @@ function resizeRatio(a, b) {
   document.getElementById('cont').style.height = gHeight + 'px';
 }
 
-/*
-function volDown() {
-  mouseVars.start.target = document.getElementById('vol-Iv');
-  mouseVars.type = 'vol';
-  volMove();
-}
-function volMove() {
-  //find the percentage of the the slider's left
-  var zWidth = mouseVars.start.target.parentNode.offsetWidth;
-  var zLeft = mouseVars.start.target.parentNode.offsetLeft + document.getElementById('cont').offsetLeft;
-  var sliderLeft = mouseVars.current.x - zLeft + 2;
-  sliderLeft -= (mouseVars.start.target.offsetWidth / 2);
-  var sliderPercent = (sliderLeft / (zWidth - mouseVars.start.target.offsetWidth)) * 100;
-  if (sliderPercent < 0) {
-    sliderPercent = 0;
-  } else if (sliderPercent > 100) {
-    sliderPercent = 100;
-  }
-  globVol = (sliderPercent / 100);
-  volUpdate();
-}
-function volUpdate() {
-  var sliderPercent = (globVol * 100);
-  //recalculate to offset width of the slider iteself
-  var zDiff = (document.getElementById('vol-Cv').offsetWidth - document.getElementById('vol-Iv').offsetWidth) / document.getElementById('vol-Cv').offsetWidth;
-  sliderPercent *= zDiff;
-  document.getElementById('vol-Iv').style.left = sliderPercent + '%';
-  //now change the color of the slider
-  var zVol = (globVol*100).toFixed(0);  
-  var zNum = Math.round((240/100) * (100 - (globVol*100)));
-  var zBack = 'radial-gradient(farthest-side at 33% 33% , hsl(' + zNum + 
-  ',100%,90%), hsl(' + zNum + ',100%,55%), hsl(' + zNum + ',100%,33%))';
-
-  document.getElementById('vol-Iv').style.background = zBack;
-  //update the app's volume
-  gameVars.vol.gain.value = globVol;
-}
-*/
 function scroller(targ, toScrollBy) {
   //console.log(toScrollBy);
   var zTop = (targ.offsetTop + toScrollBy);
