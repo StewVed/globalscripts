@@ -42,7 +42,7 @@ self.addEventListener('fetch', function(event) {
   );
 });
 self.addEventListener('activate', function(event) {
-  var zAppPrefix = cacheName.slice(0, 2);
+  var zAppPrefix = zAppVersion.slice(0, 2);
   event.waitUntil(caches.keys().then(function(cacheNames) {
     return Promise.all(cacheNames.map(function(cacheName) {
       if (cacheName.slice(0, 2) === zAppPrefix) {
