@@ -1,4 +1,5 @@
-var saveSplit1 = '<^>', saveSplit2 = '<*>', saveY;
+var saveY;
+//use LS1 & LS2 for joining/splitting lines
 function storageCheck() {
   if (localStorage) {
     if (localStorage.length) {
@@ -40,14 +41,14 @@ function storageChoose(zChoice) {
 function storageLoad(toLoad) {
   var dataToLoad = '';
   try {
-    dataToLoad = localStorage.getItem(toLoad);
+    dataToLoad = localStorage.getItem(zAppPrefix + toLoad);
   } catch (ex) {}
   return dataToLoad;
 }
 function storageSave(toSave, dataToSave) {
   //ONLY save if if is 1
   if (saveY == 1) {
-    localStorage.setItem(toSave, dataToSave);
+    localStorage.setItem(zAppPrefix + toSave, dataToSave);
   }//check whether this is the first time the user has saved something:
   else if (saveY == 0) {
     //nothing stored
