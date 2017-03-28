@@ -3,7 +3,7 @@ var zAppVersion = 'gs2017-3-28'
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(zAppVersion).then(function(cache) {
     return cache.addAll([
-      , './gevents.js'
+        './gevents.js'
       , './gtexts.js'
       , './images/Patreon.png'
       , './images/PaypalDonate.png'
