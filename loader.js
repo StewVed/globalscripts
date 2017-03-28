@@ -34,11 +34,9 @@ if ('serviceWorker' in navigator) {
   */
 
   //I wander whether I can hard-code a full web address for this?
-  navigator.serviceWorker.register('http://127.0.0.1/globalscripts/sw.js').catch(function(err) {
+  navigator.serviceWorker.register('https://stewved.github.io/globalscripts/sw.js').catch(function(err) {
     console.log('GS SW registration failed: ', err)
   });
-//http://127.0.0.1/
-//https://stewved.github.io/
   navigator.serviceWorker.register('sw.js').then(function(registration) {
     /*
       if there is a waiting serviceWorker, listen for changes in it's state.
