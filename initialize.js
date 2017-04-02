@@ -154,9 +154,8 @@ function versionCheck() {
       storageSave('appVersion', zAppVersion);
     }
   }
-  else {
-    //this could be because the user declined saving preferences,
-    //or if is a new install, or if the user cleared the localStorage.
+  else if (saveY) {
+    //only bother saving if saving is allowed!
     storageSave('appVersion', zAppVersion);
   }
 }

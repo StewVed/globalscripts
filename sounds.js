@@ -29,21 +29,17 @@ function soundBeep(type, frequency, volume, duration) {
   zOscillator.type = type;
   //default = 'sine' — other values are 'square', 'sawtooth', 'triangle' and 'custom'
   zOscillator.frequency.value = frequency;
-  zGain.gain.value = soundVol(volume);
+  zGain.gain.value = soundVol(volume) * .8;
   //start the audio beep, and set a timeout to stop it:
-  //zOscillator.start();
-  // Wander whether I could to the newer start like above?
-  zOscillator.start(0,0,(duration/1000));
-  /*
+  zOscillator.start();
+  window.setTimeout(function() {
     window.setTimeout(function() {
-      window.setTimeout(function() {
-        zOscillator.stop()
-      }, 25);
-      //stop once the volume is riiiight down.
-      zGain.gain.value = 0.001;
-      //hopefully stop that cilck at the end that can happen.
-    }, duration);
-  */
+      zOscillator.stop()
+    }, 25);
+    //stop once the volume is riiiight down.
+    zGain.gain.value = 0.001;
+    //hopefully stop that cilck at the end that can happen.
+  }, duration);
   //default to qurter of a second for the beep if no time is specified
 }
 function soundVol(num) {
@@ -51,14 +47,10 @@ function soundVol(num) {
     return 0;
   }
   else {
-  num *= globVol; //make the volume comform to the globally set volume
-  return (num * .5); //make it half loud again.
+    num *= (globVol / 100); //make the volume comform to the globally set volume
+    return (num * .5); //make it half loud again.
   }
 }
-
-
-
-
 
 
 
@@ -273,6 +265,8 @@ function pannerPlace(sliderPercent) {
   gameVars.panPos.z = sliderPercent[1];
 
   gameVars.pan.positionX.value = gameVars.panPos.x * 1;
+  //just on the offchance that Y is forward/backward...
+  gameVars.pan.positionY.value = gameVars.panPos.z * 1;
   gameVars.pan.positionZ.value = gameVars.panPos.z * 1;
 }
 function percentToPosition(num) {

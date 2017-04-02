@@ -124,18 +124,18 @@ function resize() {
     //when the available screen is not 16/9, center the game.
     //this should default as 0px for both generaly.
 
+    resizeEvents(a ,b ,portraitLayout);
+
     var zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
     var zFont = window.innerWidth * .002;
-
-
+/*
     while (zTop < 0) {
+      debugger;
       zFont *= .9;
       document.body.style.fontSize = zFont + 'em';
       zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
     }
-
-    resizeEvents();
-
+*/
     zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
     document.getElementById('cont').style.top = zTop + 'px';
     document.getElementById('cont').style.left = resizeCenter(document.body.offsetWidth, document.getElementById('cont').offsetWidth) + 'px';
@@ -262,7 +262,7 @@ function sliderMoveH() {
   if (mouseVars.start.target.id.split('-')[1] === 'pan') {
     sliderPercent.push(sliderMoveV());
   }
-  sliderUpdate(sliderPercent);
+  sliderUpdate(sliderPercent, 1);
 }
 
 function sliderMoveV() {
@@ -279,7 +279,7 @@ function sliderMoveV() {
   }
   return sliderPercent;
 }
-function sliderUpdate(sliderPercent) {
+function sliderUpdate(sliderPercent, sve) {
   //recalculate to offset width of the slider iteself
   var zDiff = (mouseVars.start.target.parentNode.offsetWidth - mouseVars.start.target.offsetWidth) / mouseVars.start.target.parentNode.offsetWidth;
   mouseVars.start.target.style.left = Math.round(sliderPercent[0] * zDiff) + '%';
@@ -287,10 +287,22 @@ function sliderUpdate(sliderPercent) {
   if (sliderPercent.length === 2) {
     zDiff = (mouseVars.start.target.parentNode.offsetHeight - mouseVars.start.target.offsetHeight) / mouseVars.start.target.parentNode.offsetHeight;
     mouseVars.start.target.style.top = Math.round(sliderPercent[1] * zDiff) + '%';
+  } else { //only color the slider button for 1D sliders.
+    sliderColors(sliderPercent);
   }
 
-  //do specific things for different sliders:
-  sliderEvents(sliderPercent);
+  //hard-code for volume control in settings:
+  if (mouseVars.start.target.id.split('-')[1] === 'vol') {
+    //update the app's volume
+    globVol = sliderPercent[0];
+    gameVars.vol.gain.value = (globVol / 100);
+    if (mouseVars.start.target.style.background.length && sve) {
+      storageSave('volume', globVol.toFixed(2));
+    }
+  } else {
+    //do specific things for different sliders:
+    sliderEvents(sliderPercent, sve);
+  }
 }
 function sliderColors(sliderPercent) {
   //change the color of the slider

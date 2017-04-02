@@ -52,10 +52,6 @@ function storageSave(toSave, dataToSave) {
   }//check whether this is the first time the user has saved something:
   else if (saveY == 0) {
     //nothing stored
-    if (toSave === 'appVersion') {
-      //ignore attempts to save the version at this point.
-      return;
-    }
     //check if the user has already got a notifyer yet:
     if (!document.getElementById('storY')) {
       //temporerily store the data in this variable.

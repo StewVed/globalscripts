@@ -1,9 +1,10 @@
-var zAppVersion = 'gs2017-3-28'
-, gs = 'https://stewved.github.io/globalscripts/';
+var zAppVersion = 'gs2017-04-02'
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(zAppVersion).then(function(cache) {
     return cache.addAll([
-        './gevents.js'
+        './'
+      , './gevents.js'
+      , './gstyles.css'
       , './gtexts.js'
       , './images/Patreon.png'
       , './images/PaypalDonate.png'
@@ -11,7 +12,6 @@ self.addEventListener('install', function(event) {
       , './initialize.js'
       , './inputs.js'
       , './loader.js'
-      , './main.css'
       , './settings.js'
       , './sounds.js'
       , './storage.js'
@@ -32,7 +32,6 @@ self.addEventListener('fetch', function(event) {
     caches.match(event.request).then(function(cacheResponse) {
       return cacheResponse || fetch(event.request).then(function(netResponse) {
         return caches.open(zAppVersion).then(function(cache) {
-          console.log(event.request.url + ' not found in gs cache!');
           cache.put(event.request, netResponse.clone());
           console.log(event.request.url + ' added to gs cache!');
           return netResponse;

@@ -1,5 +1,4 @@
 body {
-  background-color: whitesmoke;
   box-sizing: border-box;
   overflow: hidden;
   font-family: sans-serif;
@@ -146,7 +145,7 @@ ul {
   border-radius: 5em;
   clear: both;
   position: relative;
-  margin: 0.6em .2em;
+  margin: 1em .2em;
   height: 2em;
 }
 .volGrad {

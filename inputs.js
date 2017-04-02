@@ -66,6 +66,7 @@ function keyDown(e) {
       bubbleStop(e);
       //simply add the newly pressed key into the WinKeys array.
       keyVars.push(theKey);
+      keyDownGameEvents(theKey);
       anEvent();
     }
   }
@@ -89,11 +90,12 @@ function keyUp(e) {
         //updates array length while delete() doesn't
         keyVars.splice(keyVars.indexOf(theKey), 1);
       }
+      keyUpGameEvents(theKey);
       anEvent();
     }
   }
   else {
-    keyUpEvents
+    keyUpEvents();
   }
 }
 function mouseDown(e) {

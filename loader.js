@@ -3,9 +3,16 @@
  * to give the user a progressbar for each file that is being loaded.
  * does not appear to work on GitHub at the moment though.
 */
+//text shortcodes put here in case the app's text loads before gtexts.
+var zAll = '<span class="B'
+  , zNew = zAll + ' Bl">New Stuff: </span>'
+  , zImp = zAll + ' Gr">Improvement: </span>'
+  , zBug = zAll + ' Re">Bug-Fix: </span>'
+  , zDev = zAll + ' Or">Development: </span>'
+
 //vars for the game itself
 //put here so that I can check when the game has initialized
-var gameVars = null
+, gameVars = null
 , isLoaded = 0
 , isUpdated = 0
 , isOffline = 0
@@ -19,8 +26,9 @@ var gameVars = null
 */
 
 
-//check the toaster for scrolling etc.:
-//upNotCheck('u');
+//effectively hide everything until the css style file has loaded:
+document.body.style.color = 'transparent';
+
 
 if ('serviceWorker' in navigator) {
   /*
@@ -34,7 +42,7 @@ if ('serviceWorker' in navigator) {
   */
 
   //I wander whether I can hard-code a full web address for this?
-  navigator.serviceWorker.register('https://stewved.github.io/globalscripts/sw.js').catch(function(err) {
+  navigator.serviceWorker.register(gs + 'sw.js').catch(function(err) {
     console.log('GS SW registration failed: ', err)
   });
   navigator.serviceWorker.register('sw.js').then(function(registration) {
@@ -178,7 +186,14 @@ var a = ''
 , c = ''
 , d = ''
 ;
+
+for (var fileName of cssList) {
+  fPreload(fileName);
+}
 for (var fileName of fileList) {
+  fPreload(fileName);
+}
+function fPreload(fileName) {
   a = fileName[0] + fileName[1] + '.' + fileName[2]; //pre address - careful of CORS!
   b = fileName[1]; //the file name. No '.' dots allowed :D
   c = ''; // for images and audio, where special stuff has to happen.  
@@ -197,7 +212,6 @@ for (var fileName of fileList) {
 
   fLoad(a, b, c, d);
 }
-
 function fLoad(zSrc, zFileName, zType, zLoad) {
   //remove the dot and any slashes in the name, so that it can be used for the name of the progressbar
   //var zFileName = zSrc.replace(/\./, '').replace(/\//, '');
@@ -220,16 +234,13 @@ function fLoad(zSrc, zFileName, zType, zLoad) {
   loadingVars[zFileName].xhr = 1;
   //the total amount to be downloaded.
   //Create a new request to the server
-  if (!isOffline) {
-    //quick check to se if it is local: (Dev only) :
     var xhr = new XMLHttpRequest();
     xhr.open('GET', zSrc, true);
     //was false so it blocks until a response is got, but recoded to true with a loading pulser instead.
     //change the responseType to blob in the case of an image - blob=not changed/as-is
     if (zType === 'i') {
       xhr.responseType = 'blob';
-    }
-    else if (zType === 'a') {
+    } else if (zType === 'a') {
       xhr.responseType = 'arraybuffer';
     }
     //create an onLoad event for when the server has sent the data through to the browser
@@ -248,6 +259,8 @@ function fLoad(zSrc, zFileName, zType, zLoad) {
             }
             else if (zType === 'a') {
               a = 'audio';
+            } else if (zType === 'c') {
+              a = 'link';
             }
           } else {
             a = 'script';
@@ -258,55 +271,37 @@ function fLoad(zSrc, zFileName, zType, zLoad) {
             zElem.id = zFileName;
           }
           if (zType === 'i') {
-            window.URL.revokeObjectURL(zElem.src);
             //make sure there is no src
-            zElem.src = window.URL.createObjectURL(xhr.response);
+            window.URL.revokeObjectURL(zElem.src);
             //add the downloaded src to the element
+            zElem.src = window.URL.createObjectURL(xhr.response);
+          } else if (zType === 'c') {
+            zElem.rel = 'stylesheet';
+            zElem.type = 'text/css';
+            zElem.href = xhr.responseURL;
           } else {
             zElem.innerHTML = xhr.responseText;
           }
           document.head.appendChild(zElem);
+          if (zFileName === 'gstyles') {
+            //change back the body color:
+            document.body.style.color = 'black';
+          }
         }
       }
     }, false);
-    xhr.addEventListener('error', function() {
+    xhr.addEventListener('error', function(e) {
       //will happen with files during local development
-      loadingVars[zFileName].xhr = 0;
-      isOffline = 1;
-      fLoadSimple(zSrc.split('.')[0]);
+      console.log('error loading recource: ' + e)
     }, false);
     xhr.addEventListener('progress', function(e) {
       fileProgress(e, zFileName)
     }, false);
     xhr.send();
-  } else {
-    fLoadSimple(zSrc.split('.')[0]);
-  }
   //high resolution version of date.now()
   loadingVars[zFileName].frame = window.requestAnimationFrame(function() {
     fileProgresser(zFileName)
   });
-}
-function fLoadSimple(fileName) {
-  return;
-  if (fileName === 'toddlearnerWave') {
-    //don't bother trying to make a buffer from the wav through
-    //and audio element...or any other way - seems impossible.
-    //rely purely on fload through serviceworker/server.
-  }
-  else {
-    var firstScript = document.getElementsByTagName('script')[0];
-    var zScript = document.createElement('script');
-    //zScript.type = 'text/javascript'; //needed in modern browsers?!Q?
-    zScript.id = fileName + 'l';
-    zScript.src = fileName + '.js';
-    zScript.addEventListener('load', function() {
-      this.id = this.id.slice(0, -1);
-      filesLoadedCheck();
-    });
-    firstScript.parentNode.insertBefore(zScript, firstScript);
-  }
-
 }
 function fLoadProgressBar(zFileName, zText) {
   if (document.getElementById('loading')) {
@@ -390,8 +385,7 @@ function fileProgresser(zFileName) {
         fileProgresser(zFileName)
       });
     } else {
-      //window.clearInterval(window[zFileName + 'Timer']);
-      document.getElementById(zFileName + 'C').style.transition = '1s';
+      document.getElementById(zFileName + 'C').style.transition = 'opacity 1s';
       document.getElementById(zFileName + 'C').style.opacity = 0;
       window.setTimeout(function() {
         if (document.getElementById(zFileName + 'C')) {
@@ -406,6 +400,13 @@ function fileProgresser(zFileName) {
 function filesLoadedCheck() {
   //if all essential data is loaded, initialize. Once only
   if (document.getElementById('loading')) {
+    //check for the styles:
+    for (var fileName of cssList) {
+      if (!document.getElementById(fileName[1])) {
+        //Not all scripts have finished (down)loading, so do not start yet.
+        return;
+      }
+    }
     //check for the scripts:
     for (var fileName of fileList) {
       if (!document.getElementById(fileName[1])) {
