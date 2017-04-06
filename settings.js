@@ -41,11 +41,7 @@ var zVol = '';
     + '<div id="bChange" class="uButtons uButtonGrey">ChangeLog</div>'
     + '<br>'
     + '<hr>' //Now for the Support buttons:
-    + '<p class="B pZW">Tips & Support:</p>'//Patreon Button-link to my site
-    + '<a class=\'ubLink\' href=\'https://www.patreon.com/stewved\' target=\'_blank\'><img class="imgSocs ubLink" ' + imgSocs + 'Patreon.png\');cursor:pointer;margin:auto;display:block;width:100%;height:44px;"' + imgDummy + '></a>' + '<hr style=width:80%;">'//PayPal Donate Button
-    + '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">' + '<input type="hidden" name="cmd" value="_s-xclick">' + '<input type="hidden" name="hosted_button_id" value="RJMCJX2TE8E4Y">'//'<input type="image" style="height:47px;margin:4px auto;display:block;" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">' +
-      + '<input type="image" class="imgSocs ubLink" ' + imgSocs + 'PaypalDonate.png\');height:47px;width:100%;margin:4px auto;display:block;" ' + imgDummy + ' name="submit" alt="PayPal – The safer, easier way to pay online.">'//'<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">' +
-    + '</form>'
+    + appTips
     ;
   document.body.appendChild(newElem);
 

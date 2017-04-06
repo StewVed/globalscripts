@@ -1,8 +1,9 @@
-var zAppVersion = 'gs2017-04-02'
+var zAppVersion = 'gs2017-04-05'
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(zAppVersion).then(function(cache) {
     return cache.addAll([
         './'
+      , './gcl.js'
       , './gevents.js'
       , './gstyles.css'
       , './gtexts.js'
@@ -16,14 +17,6 @@ self.addEventListener('install', function(event) {
       , './sounds.js'
       , './storage.js'
       , './toolTips.js'
-
-    /*
-      Do not include:
-      index.html
-      (chrome 56.0.2924.87 (64-bit) asks for appmanifest now!) Application Manifest file (appmanifest)
-      any favicons
-      Service Worker file (sw.js)
-    */
     ])
   }))
 });
