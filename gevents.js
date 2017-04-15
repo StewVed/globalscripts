@@ -79,74 +79,51 @@ function resize() {
     document.getElementById('cont').style.top = zTop + 'px';
     return;
   }
+
   //maybe I should make the game bit a squre, then have the scores bit
   //however amount of space is left? what if the available area is square?
   //regardless, let's begin by finding the smallest size out of length and width:
-  var a
-  , b
-  , portraitLayout;
 
   document.body.style.width = window.innerWidth + 'px';
   document.body.style.height = window.innerHeight + 'px';
 
-  if (window.innerWidth > window.innerHeight) {
-    a = window.innerHeight;
-    b = window.innerWidth;
-    portraitLayout = 0;
-  }
-  else {
-    a = window.innerWidth;
-    b = window.innerHeight;
-    portraitLayout = 1;
-  }
-
   if (document.getElementById('cont')) {
-    /*
-      in my webtop, I hava a scaling system for each element.
-      perhaps though, I can see if this newer idea would
-      work well enough...
-      See, just changing the font size of the body should
-      make every element scale to the new font size anyway,
-      and since that would be done by the browser, I expect
-      it to be more efficient than my own dodgy scaling code!
-    */
-    document.body.style.fontSize = window.innerWidth * .002 + 'em';
-  /*
-    var gWidth = document.body.offsetWidth;
-    var gHeight = (gWidth / (16 / 9));
-    if (gHeight > document.body.offsetHeight) {
-    gHeight = document.body.offsetHeight;
-    gWidth = gHeight * (16 / 9);
-    }
-    document.getElementById('cont').style.width = gWidth + 'px';
-    document.getElementById('cont').style.height = gHeight + 'px';
-  */
-    //when the available screen is not 16/9, center the game.
-    //this should default as 0px for both generaly.
+    resizeSetSize(window.innerWidth)
+  }
 
-    resizeEvents(a ,b ,portraitLayout);
+}
 
+function resizeSetSize(num) {
+  document.body.style.fontSize = (num * .002) + 'em';
+  window.requestAnimationFrame(function() {
+    resizeEvents();
+    resizeCheckSize();
+  });
+
+}
+
+function resizeCheckSize() {
     var zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
-    var zFont = window.innerWidth * .002;
-/*
-    while (zTop < 0) {
-      debugger;
-      zFont *= .9;
-      document.body.style.fontSize = zFont + 'em';
-      zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
-    }
-*/
-    zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
-    document.getElementById('cont').style.top = zTop + 'px';
-    document.getElementById('cont').style.left = resizeCenter(document.body.offsetWidth, document.getElementById('cont').offsetWidth) + 'px';
-  }
 
-  if (document.getElementById('toastClose')) {
-    closeButtonRight('toastClose');
-  }
-  if (document.getElementById('setsClose')) {
-    closeButtonRight('setsClose');
-  }
+    if (zTop < 0) {
+      //Assume the overall aspect ratio of the container remains
+      //the same, reduce the width of the container by the % that
+      //it is over the window width.
+      var cHeight = document.getElementById('cont').offsetHeight;
+      var newWidth = document.getElementById('cont').offsetWidth  / (cHeight / window.innerHeight);
+      document.getElementById('cont').style.width = newWidth + 'px';
+      resizeSetSize(newWidth);
+    } else if (
+        (document.getElementById('cont').offsetWidth < (window.innerWidth * .95))
+      && (document.getElementById('cont').offsetHeight < (window.innerHeight * .95))
+      ) {
+      var cWidth = document.getElementById('cont').offsetWidth;
+      var newwidth = cWidth  / (cWidth / window.innerWidth);
+      document.getElementById('cont').style.width = newwidth + 'px';
+      resizeSetSize(newWidth);
+    } else {
+      resizeEnd();
+    }
 }
 
 function resizeRatio(a, b) {
@@ -159,6 +136,37 @@ function resizeRatio(a, b) {
   }
   document.getElementById('cont').style.width = gWidth + 'px';
   document.getElementById('cont').style.height = gHeight + 'px';
+}
+
+function resizeEnd() {
+  document.getElementById('cont').style.top = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight) + 'px';
+  document.getElementById('cont').style.left = resizeCenter(document.body.offsetWidth, document.getElementById('cont').offsetWidth) + 'px';
+
+  if (document.getElementById('toastClose')) {
+    closeButtonRight('toastClose');
+  }
+  if (document.getElementById('setsClose')) {
+    closeButtonRight('setsClose');
+  }
+}
+
+function resizeCheckOrientation() {
+    var a
+  , b
+  , portraitLayout;
+
+  if (window.innerWidth > window.innerHeight) {
+    a = window.innerHeight;
+    b = window.innerWidth;
+    portraitLayout = 0;
+  }
+  else {
+    a = window.innerWidth;
+    b = window.innerHeight;
+    portraitLayout = 1;
+  }
+
+  return [a,b,portraitLayout];
 }
 
 function scroller(targ, toScrollBy) {

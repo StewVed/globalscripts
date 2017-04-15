@@ -35,10 +35,6 @@ var killFS = (document.exitFullscreen || document.mozCancelFullScreen || documen
 , keyVars = []
 //For touch-enabled devices
 , touchVars = []
-//from webtop project -
-, imgSocs = 'style="background:center/contain no-repeat url(\'' + gs + 'images/'
-//base64 code for an empty 1x1 png:
-, imgDummy = ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMAAABIeJ9nAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjAAIAAAQAASDSLW8AAAAASUVORK5CYII="'
 //vars to hold variables for the window
 , gameWindow = null
 , audioSprite = null

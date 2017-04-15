@@ -9,6 +9,10 @@ var zAll = '<span class="B'
   , zImp = zAll + ' Gr">Improvement: </span>'
   , zBug = zAll + ' Re">Bug-Fix: </span>'
   , zDev = zAll + ' Or">Development: </span>'
+//from webtop project -
+, imgSocs = 'style="background:center/contain no-repeat url(\'' + gs + 'images/'
+//base64 code for an empty 1x1 png:
+, imgDummy = ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMAAABIeJ9nAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjAAIAAAQAASDSLW8AAAAASUVORK5CYII="'
 
 //vars for the game itself
 //put here so that I can check when the game has initialized
@@ -16,7 +20,8 @@ var zAll = '<span class="B'
 , isLoaded = 0
 , isUpdated = 0
 , isOffline = 0
-, loadingVars = [];
+, loadingVars = []
+;
 //add service worker registration to the app:
 /*serviceworker (mostly) learned from:
   https://w3c.github.io/ServiceWorker/
@@ -24,10 +29,6 @@ var zAll = '<span class="B'
   https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
   Also simply by looking at the stuff in Chrome's Development tools environment while paused!
 */
-
-
-//effectively hide everything until the css style file has loaded:
-document.body.style.color = 'transparent';
 
 
 if ('serviceWorker' in navigator) {
@@ -285,7 +286,7 @@ function fLoad(zSrc, zFileName, zType, zLoad) {
           document.head.appendChild(zElem);
           if (zFileName === 'gstyles') {
             //change back the body color:
-            document.body.style.color = 'black';
+            document.getElementById('loading').style.color = 'black';
           }
         }
       }

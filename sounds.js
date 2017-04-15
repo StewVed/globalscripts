@@ -212,15 +212,15 @@ function pannerInit() {
   */
   gameVars.pan.coneInnerAngle = 360; //360 is default
   gameVars.pan.coneOuterAngle = 0; //0 is default, 360 should mean no fading?
-  gameVars.pan.coneOuterGain = 100; //0 is default but what is the max? 1? 100?
+  gameVars.pan.coneOuterGain = 1; //0 is default but what is the max? 1? 100?
   //gameVars.pan.distanceModel = 'inverse'; //inverse is the default value
-  gameVars.pan.maxDistance = 999999; //10000 is default
+  gameVars.pan.maxDistance = 100; //10000 is default
   /*
   gameVars.pan.orientation[X|Y|Z].value turns/points the audio source in 3D space.
     Since the audio source should be omnomnomdirectional (:D)
     then all three orientations (x, y, z) should make no difference.
   */
-  gameVars.pan.panningModel = 'HRTF'; //HRTF is the default value.
+  gameVars.pan.panningModel = 'equalpower'; //HRTF is the default value.
   //HRTF Renders a stereo output of higher quality than equalpower
   //I'm trying the equalpower one as the output may not only be stereo -
   //what about surround for example?
@@ -229,7 +229,7 @@ function pannerInit() {
   */
   gameVars.pan.refDistance = 1; //1 is default
   gameVars.pan.rolloffFactor = 0; //1 is default
-
+  //debugger;
 /*
   //if(gameVars.lisn.forwardX) {
     gameVars.lisn.forwardX.value = 0; //assume left/right
@@ -245,7 +245,7 @@ function pannerInit() {
   // listener will always be in the same place for this demo
   //if(listener.positionX) {
     gameVars.lisn.positionX.value = 50; //left/right
-    gameVars.lisn.positionY.value = 5; //up/down
+    gameVars.lisn.positionY.value = 10; //up/down
     gameVars.lisn.positionZ.value = 50; //forward/back
   //} else {
   //  gameVars.lisn.setPosition(-100, 0, 0);
@@ -266,7 +266,7 @@ function pannerPlace(sliderPercent) {
 
   gameVars.pan.positionX.value = gameVars.panPos.x * 1;
   //just on the offchance that Y is forward/backward...
-  gameVars.pan.positionY.value = gameVars.panPos.z * 1;
+  //gameVars.pan.positionY.value = gameVars.panPos.z * 1;
   gameVars.pan.positionZ.value = gameVars.panPos.z * 1;
 }
 function percentToPosition(num) {

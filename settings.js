@@ -19,7 +19,7 @@ function settingsCreate() {
   newElem.classList = 'settW';
 var zVol = '';
   if (gameVars.vol) {
-    zVol = 
+    zVol =
     '<div id="sli-vol-C" class="volCont">'
       + '<div id="sli-vol-g" class="volGrad"></div>'
       + '<div id="sli-vol-I" class="volInner">'
@@ -37,11 +37,12 @@ var zVol = '';
     + '<br>'
     //volume slider:
     + zVol
-    + '<div id="bAbout" class="uButtons uButtonGrey">About</div>'
-    + '<div id="bChange" class="uButtons uButtonGrey">ChangeLog</div>'
-    + '<br>'
+    //+ '<div id="bAbout" class="uButtons uButtonGrey">About</div>'
+    + '<div id="bChange" class="uButtons uButtonGrey">App ChangeLog</div>'
     + '<hr>' //Now for the Support buttons:
     + appTips
+    + appAbout
+    + appBugs
     ;
   document.body.appendChild(newElem);
 
@@ -66,13 +67,17 @@ var zVol = '';
 function settingsClose1() {
   if (document.getElementById('settns')) {
     //move the settings element back offscreen to the left
-    document.getElementById('settns').style.left = '-90%';
+    document.getElementById('settns').style.transition = 'left .6s ease-in';
+    document.getElementById('settns').style.left = '-100%';
     //after it has moved offscreen, remove the whole thing.
-    window.setTimeout(function(){settingsClose2()},600);
+    window.setTimeout(function(){settingsClose2()},650);
   }
 }
 function settingsClose2() {
   if (document.getElementById('settns')) {
     document.body.removeChild(document.getElementById('settns'));
+    if (window['settinsCloseEvent']) {
+      settinsCloseEvent();
+    }
   }
 }
