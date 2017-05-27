@@ -55,7 +55,7 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext
 }
 , LS1 = '@#~'
 , LS2 = '~#@'
-, globVol = 0 //the volume of the audio in the game.
+, globVol = .54 //the volume of the audio in the game.
 , saveY = 0 //whether the user allows saving to HTML5 local storage
 ;
 
@@ -82,7 +82,7 @@ function Init() {
   keysCurrent = parseFloat(storageLoad('keymap')) || keysDefault;
 
   //check if the user has modified the volume level:
-  globVol = parseFloat(storageLoad('volume')) || 58.5;
+  globVol = parseFloat(storageLoad(zAppPrefix + 'volume'));
 
   //add the initContent function to the main project, and return
   //the html content of the app :)

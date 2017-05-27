@@ -1,4 +1,4 @@
-globUpDate = '2017-04-05' //**not used yet** For checking when the global files were last updated.
+globUpDate = '2017-05-27' //**not used yet** For checking when the global files were last updated.
 
 , globCL =
     '<p class="B C">TODO</p> '
@@ -6,6 +6,10 @@ globUpDate = '2017-04-05' //**not used yet** For checking when the global files 
   + '</li></ul>'
   + 'If you find a bug, or have a suggestion, please let me know at '
   + '<a class=ubLink href="https://github.com/StewVed/globalscripts/issues" target=_blank>GitHub Issues</a>'
+  + '<hr>'
+  + '<p class="B C">27th May 2017</p> '
+  + '<ul><li>' + zImp + 'Added game prefix to the global volume, so that it is for the app that is running.'
+  + '</li></ul>'
   + '<hr>'
   + '<p class="B C">15th April 2017</p> '
   + '<ul><li>' + zImp + 'Added new event trigger for when user closes Settings. This should be great for unpausing a game, etc.'

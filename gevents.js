@@ -305,7 +305,7 @@ function sliderUpdate(sliderPercent, sve) {
     globVol = sliderPercent[0];
     gameVars.vol.gain.value = (globVol / 100);
     if (mouseVars.start.target.style.background.length && sve) {
-      storageSave('volume', globVol.toFixed(2));
+      storageSave(zAppPrefix + 'volume', globVol.toFixed(2));
     }
   } else {
     //do specific things for different sliders:
