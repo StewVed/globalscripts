@@ -81,7 +81,7 @@ function Init() {
   //for the moment, just use the default keyset:
   keysCurrent = parseFloat(storageLoad('keymap')) || keysDefault;
 
-  //check if the user has modified the volume level:
+  //check if the user has modified the volume level if not, default to 54%:
   globVol = parseFloat(storageLoad('volume') || 54);
 
   //add the initContent function to the main project, and return

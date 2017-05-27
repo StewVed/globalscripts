@@ -8,7 +8,7 @@ globUpDate = '2017-05-27' //**not used yet** For checking when the global files 
   + '<a class=ubLink href="https://github.com/StewVed/globalscripts/issues" target=_blank>GitHub Issues</a>'
   + '<hr>'
   + '<p class="B C">27th May 2017</p> '
-  + '<ul><li>' + zImp + 'Added game prefix to the global volume, so that it is for the app that is running.'
+  + '<ul><li>' + zDev + 'a little fooling about with the global volume for individual apps.'
   + '</li></ul>'
   + '<hr>'
   + '<p class="B C">15th April 2017</p> '
