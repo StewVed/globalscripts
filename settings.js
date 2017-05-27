@@ -45,7 +45,7 @@ var zVol = '';
     + appBugs
     ;
   document.body.appendChild(newElem);
-
+  
   if (gameVars.vol) {
     //set the volume slider:
     mouseVars.start.target = document.getElementById('sli-vol-I');
