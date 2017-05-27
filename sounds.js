@@ -105,8 +105,6 @@ function tg_changeFreq(perCent) {
   }
   */
 
-  //debugger;
-
   gameVars.tone.frequency.value = nowFreq;
   //t10.toFixed(3);
 /*
@@ -229,7 +227,6 @@ function pannerInit() {
   */
   gameVars.pan.refDistance = 1; //1 is default
   gameVars.pan.rolloffFactor = 0; //1 is default
-  //debugger;
 /*
   //if(gameVars.lisn.forwardX) {
     gameVars.lisn.forwardX.value = 0; //assume left/right

@@ -259,7 +259,6 @@ function sliderMoveH() {
   var zLeft = mouseVars.start.target.parentNode.offsetLeft + document.getElementById('cont').offsetLeft;
   var sliderLeft = mouseVars.current.x - zLeft + 2;
   sliderLeft -= (mouseVars.start.target.offsetWidth / 2);
-  //debugger;
   var sliderPercent = [(sliderLeft / (zWidth - mouseVars.start.target.offsetWidth)) * 100];
   if (sliderPercent[0] < 0) {
     sliderPercent[0] = 0;
