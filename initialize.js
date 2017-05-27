@@ -82,7 +82,7 @@ function Init() {
   keysCurrent = parseFloat(storageLoad('keymap')) || keysDefault;
 
   //check if the user has modified the volume level:
-  globVol = parseFloat(storageLoad(zAppPrefix + 'volume') || .54);
+  globVol = parseFloat(storageLoad('volume') || .54);
 
   //add the initContent function to the main project, and return
   //the html content of the app :)
