@@ -190,9 +190,10 @@ function mouseMove(e) {
     var framesPerSecond = (1000 / (scrollVars.time - mouseVars.current.time));
     var pixlesMoved = (mouseVars.current.y - scrollVars.y);
     var speedInPixelsPerSecond = pixlesMoved * framesPerSecond;
+
     //console.log(speedInPixelsPerSecond);
     if (pixlesMoved) {
-      scroller(mouseVars.start.target, pixlesMoved);
+      scroller(mouseVars.start.target, findCloseButton(mouseVars.start.target), pixlesMoved);
     }
 
     scrollVars.time = mouseVars.current.time;
@@ -218,6 +219,7 @@ function mouseMove(e) {
   } else if (mouseVars.type === 'click') {
     if (((mouseVars.start.x + 25) < e.clientX) || ((mouseVars.start.x - 25) > e.clientX) || ((mouseVars.start.y + 25) < e.clientY) || ((mouseVars.start.y - 25) > e.clientY)) {
       window.clearTimeout(mouseVars.clickTimer);
+    //debugger;
       if (mouseVars.start.target.id === 'sli-pan-I') {
         //change the mouseType to slider.
         mouseVars.type = 'sli';
@@ -234,7 +236,7 @@ function mouseMove(e) {
     if (mouseVars.start.target.classList.contains('letScroll')) {
       mouseVars.type = 'scrollable';
       //there is currently only one scrolling element at the moment.
-      mouseVars.start.target = document.getElementById('toastPopup');
+      mouseVars.start.target = findUpperScrollable(mouseVars.start.target);
       scrollVars.time = mouseVars.current.time;
       scrollVars.x = mouseVars.current.x;
       scrollVars.y = mouseVars.current.y;
@@ -284,14 +286,15 @@ function mouseUp(e) {
       //console.log(speedInPixelsPerSecond);
 
       if (pixlesMoved) {
-        scroller(mouseVars.start.target, pixlesMoved);
+        scroller(mouseVars.start.target, findCloseButton(mouseVars.start.target), pixlesMoved);
       }
       //speed should now be pixels per second, averaged over the last 5 frames.
       //console.log('average speed = ' + zSpeed);
       //mouseVars.start.target gets cleared, so make a seperate pointer.
-      var zDiv = document.getElementById(mouseVars.start.target.id);
+      var targ = document.getElementById(mouseVars.start.target.id);
+      var zCloseButton = findCloseButton(targ);
       window.requestAnimationFrame(function() {
-        divScroller(zDiv, -speedInPixelsPerSecond, tNow)
+        divScroller(targ, zCloseButton, -speedInPixelsPerSecond, tNow)
       });
     }
   }
@@ -335,7 +338,20 @@ function mouseWheel(e) {//for zooming in/out, changing speed, etc.
   } else {
     delta = -1;
   }
-  mouseWheelEvents(targ, delta);
+
+  if (targ.classList.contains('letScroll')) {
+    //very dodgy hard-code - only one thing can be scrolled.
+    //targ = document.getElementById('toastPopup');
+    targ = findUpperScrollable(targ);
+    var zCloseButton = findCloseButton(targ);
+
+    //debugger;
+    divScroller(targ, zCloseButton, delta*1000, new Date().getTime());
+  }
+  else {
+    mouseWheelEvents(targ, delta);
+  }
+
 }
 
 function mouseClick() {
@@ -445,4 +461,24 @@ function touchUp(e) {
       delete touchVars[zID];
     }
   }
+}
+
+function findUpperScrollable(targ) {
+  /*
+    Go through the parentNodes of the targ element,
+    making a note of each element as we go,
+    until we reach the outermost element that
+    has 'letScroll' in its classList.
+    Make targ that element.
+  */
+  if (targ.parentNode) {
+    while (targ.parentNode.classList.contains('letScroll')) {
+      targ = targ.parentNode;
+      //check whether there is another parentNode!
+      if (!targ.parentNode) {
+        break;
+      }
+    }
+  }
+  return targ;
 }

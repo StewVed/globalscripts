@@ -139,7 +139,7 @@ ul {
   border-right: 2px solid hsl(210, 100%, 50%);
 }
 
-.settW {
+.settCont {
   position: absolute;
   top: 0;
   left: -100%;
@@ -149,8 +149,11 @@ ul {
   border-right: 4px solid hsl(210, 100%, 50%);
   transition: left .6s ease-out;
   text-align: center;
-  padding: 1.5em .8em;
   box-sizing: border-box;
+}
+.settInner {
+  position: absolute;
+  padding: 1.5em .8em;
 }
 
 .volCont {

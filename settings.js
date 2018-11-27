@@ -15,8 +15,8 @@ function settingsButton() {
 function settingsCreate() {
   //create a semi-opaque rounded rectangle on the top-right, and put the message into it.
   var newElem = document.createElement('div');
-  newElem.id = 'settns';
-  newElem.classList = 'settW';
+  newElem.id = 'settCont';
+  newElem.classList = 'settCont';
 var zVol = '';
   if (gameVars.vol) {
     zVol =
@@ -28,8 +28,9 @@ var zVol = '';
     + '</div>';
   }
   newElem.innerHTML =
+    '<div id="settInner" class="settInner">'
     //close button
-    '<div id="setsClose" class="buttonClose">X</div>'
+    + '<div id="setsClose" class="buttonClose">X</div>'
     //fullscreen toggle button
     + '<div id="fs" class="uButtons uButtonGreen">'
       + '<span id="fsI" class="fsInner">&#9974;</span>&nbsp;Fullscreen'
@@ -43,9 +44,10 @@ var zVol = '';
     + appTips
     + appAbout
     + appBugs
+    + '</div>'
     ;
   document.body.appendChild(newElem);
-  
+
   if (gameVars.vol) {
     //set the volume slider:
     mouseVars.start.target = document.getElementById('sli-vol-I');
@@ -57,25 +59,28 @@ var zVol = '';
   if (window['settingsExtra']) {
     settingsExtra();
   }
+
+  upSetClass(newElem);
+
   //in the CSS, the left is set to -90% and width 90%
   //so now we move it onto the screen from the left.
   window.setTimeout(function(){
-    document.getElementById('settns').style.left = 0;
+    document.getElementById('settCont').style.left = 0;
   }, 25);
 }
 
 function settingsClose1() {
-  if (document.getElementById('settns')) {
+  if (document.getElementById('settCont')) {
     //move the settings element back offscreen to the left
-    document.getElementById('settns').style.transition = 'left .6s ease-in';
-    document.getElementById('settns').style.left = '-100%';
+    document.getElementById('settCont').style.transition = 'left .6s ease-in';
+    document.getElementById('settCont').style.left = '-100%';
     //after it has moved offscreen, remove the whole thing.
     window.setTimeout(function(){settingsClose2()},650);
   }
 }
 function settingsClose2() {
-  if (document.getElementById('settns')) {
-    document.body.removeChild(document.getElementById('settns'));
+  if (document.getElementById('settCont')) {
+    document.body.removeChild(document.getElementById('settCont'));
     if (window['settinsCloseEvent']) {
       settinsCloseEvent();
     }

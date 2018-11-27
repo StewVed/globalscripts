@@ -16,6 +16,19 @@ function findTarget(e) {
   return targ;
 }
 
+function findCloseButton(targ) {
+  //if there is a close button, make sure it stays on-screen.
+  var zElemChildList = targ.children;
+  var zCloseButton = 0;
+  for (var zChilds = 0; zChilds < zElemChildList.length; zChilds++) {
+    if (zElemChildList[zChilds].id.toLowerCase().indexOf('close') != -1) {
+      zCloseButton = zElemChildList[zChilds];
+      break; //only ever have "close" on the close button!
+    }
+  }
+  return zCloseButton;
+}
+
 function keyRedefine(theKey) {
   // left,up,right,down,A,B,X,Y   you can add more should your game require it.
   var theKey = keyNum(e);
@@ -169,28 +182,40 @@ function resizeCheckOrientation() {
   return [a,b,portraitLayout];
 }
 
-function scroller(targ, toScrollBy) {
+function scroller(targ, zCloseButton, toScrollBy) {
   //console.log(toScrollBy);
+  var stopNow = 0;
   var zTop = (targ.offsetTop + toScrollBy);
-  var tcTop = document.getElementById('toastContainer').offsetTop;
+  var tcTop = targ.parentNode.offsetTop;
   var longest = document.body.offsetHeight - (targ.clientHeight + tcTop);//don't include border on targ.
 
   if (longest > zTop) {
     zTop = longest;
+    stopNow = 1;
   }
   else if (zTop > 0) {
     zTop = 0;
+    stopNow = 1;
+
   }
   targ.style.top = zTop + 'px';
-  //if there is a close button, make sure it stays on-screen.
-  if (document.getElementById('toastClose')) {
-    //might be the scroll value perhaps... dunno yet.
+
+
+  if (zCloseButton) {
+    //check first in case browser blindly sets each time
     if (zTop < -tcTop) {
-      document.getElementById('toastClose').style.top = (-zTop - tcTop) + 'px';
+      if (zCloseButton.style.position != 'fixed') {
+        zCloseButton.style.position = 'fixed';
+      }
+    }
+    else if (zCloseButton.style.position != 'absolute') {
+      zCloseButton.style.position = 'absolute';
     }
   }
+
+  return stopNow;
 }
-function divScroller(targ, zSpeed, zTime) {
+function divScroller(targ, zCloseButton, zSpeed, zTime) {
   if (!targ || mouseVars.button) {
     //if the element no longer exists, there is nothing to do.
     return;
@@ -199,13 +224,21 @@ function divScroller(targ, zSpeed, zTime) {
   var tDiff = (tNow - zTime) / 1000;
   var newSpeed = zSpeed;
   var toScrollBy = (zSpeed * tDiff);
-  if ((tDiff > 0) && (zSpeed != 0) && (toScrollBy < 0.25 && toScrollBy > -0.25)) {
+  if ((tDiff > 0) && (zSpeed != 0) && (toScrollBy < 1 && toScrollBy > -1)) {
     //scroll speed is too slow. Just stop the scrolling animation.
     return;
   }
 
-  //scroller(targ, (e.clientY - mouseVars.current.y));
-  scroller(targ, toScrollBy);
+  if (toScrollBy > 1 || toScrollBy < 1) {
+    if (scroller(targ, zCloseButton, toScrollBy)) {
+      /*
+        when hitting the top or bottom of the scroll,
+        stop it scrolling any more.
+      */
+      newSpeed = 0;
+    }
+  }
+
   //now to calculate the next frame's scroll amount:
   if (tDiff) {
     /*
@@ -227,7 +260,7 @@ function divScroller(targ, zSpeed, zTime) {
   }
   if (newSpeed) {
     window.requestAnimationFrame(function() {
-      divScroller(targ, newSpeed, tNow)
+      divScroller(targ, zCloseButton, newSpeed, tNow)
     });
   }
 }
@@ -256,7 +289,7 @@ function fullScreenToggle() {
 function sliderMoveH() {
   //find the percentage of the the slider's left
   var zWidth = mouseVars.start.target.parentNode.offsetWidth;
-  var zLeft = mouseVars.start.target.parentNode.offsetLeft + document.getElementById('cont').offsetLeft;
+  var zLeft = mouseVars.start.target.parentNode.offsetLeft + document.getElementById('settCont').offsetLeft;
   var sliderLeft = mouseVars.current.x - zLeft + 2;
   sliderLeft -= (mouseVars.start.target.offsetWidth / 2);
   var sliderPercent = [(sliderLeft / (zWidth - mouseVars.start.target.offsetWidth)) * 100];

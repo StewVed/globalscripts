@@ -30,66 +30,70 @@ var zAll = '<span class="B'
   Also simply by looking at the stuff in Chrome's Development tools environment while paused!
 */
 
+//for ease of debugging, comment out this so the serviceWorker doesn't cache files!
+initServiceWorker();
 
-if ('serviceWorker' in navigator) {
-  /*
-    https://w3c.github.io/ServiceWorker/#install
-    2017-03-14 have given up with all statechange:activated event checks
-    they just don't work, and so I assume the actual activation of a new
-    serviceWorker takes place when the page is closed or some other time
-    when these eventListeners are not listening.
-
-    I've created a localStorage version check instead!
-  */
-
-  //I wander whether I can hard-code a full web address for this?
-  navigator.serviceWorker.register(gs + 'sw.js').catch(function(err) {
-    console.log('GS SW registration failed: ', err)
-  });
-  navigator.serviceWorker.register('sw.js').then(function(registration) {
+function initServiceWorker() {
+  if ('serviceWorker' in navigator) {
     /*
-      if there is a waiting serviceWorker, listen for changes in it's state.
-      When the page closes,
-      Upon page reload, the waiting serviceWorker is
-      promoted to the active serviceWorker.
-    */
-    if (registration.waiting) {
-      if (registration.active && registration.waiting.state === 'installed') {
-        //inform user that a hard-reload is needed, not just F5
-        upNotCheck('Waiting to update...<br>Please close then re-open app for new version.')
-      }
-    }
-    /*
-      listen for an update to the serviceworker's file.
-      This should fire on the first load of the web page, since
-      any serviceWorker file is different to nothing.
-      Also should fire if there is any difference in cached 
-      and server's serviceWorker file.
+      https://w3c.github.io/ServiceWorker/#install
+      2017-03-14 have given up with all statechange:activated event checks
+      they just don't work, and so I assume the actual activation of a new
+      serviceWorker takes place when the page is closed or some other time
+      when these eventListeners are not listening.
 
-      Dispatched when the service worker registration's
-      installing worker changes
+      I've created a localStorage version check instead!
     */
-    registration.addEventListener('updatefound', function() {
-      //Listen for changes in the installing serviceWorker's state
-      //registration.installing.addEventListener('statechange', swRI);
-      registration.installing.addEventListener('statechange', function(e){
-        //Assume a serviceWorker keeps it's eventListeners
-        //when it goes from the installing, to waiting, then to active one.
-        //if not, addEventListener for waiting and active when required.
-        //yeah... seems to keep the eventlistener through it all.
-        if (e.target.state === 'installed') {
-          if (registration.active) {
-            upNotCheck('Update downloaded.<br>Please restart app for new version.');
-          }
-        }
-        else if (e.target.state === 'activated') {
-          upNotCheck('i')
-        }
-      });
+
+    //I wander whether I can hard-code a full web address for this?
+    navigator.serviceWorker.register(gs + 'sw.js').catch(function(err) {
+      console.log('GS SW registration failed: ', err)
     });
-  }).catch(function(err) {
-    console.log('ServiceWorker registration failed: ', err)
-  });
+    navigator.serviceWorker.register('sw.js').then(function(registration) {
+      /*
+        if there is a waiting serviceWorker, listen for changes in it's state.
+        When the page closes,
+        Upon page reload, the waiting serviceWorker is
+        promoted to the active serviceWorker.
+      */
+      if (registration.waiting) {
+        if (registration.active && registration.waiting.state === 'installed') {
+          //inform user that a hard-reload is needed, not just F5
+          upNotCheck('Waiting to update...<br>Please close then re-open app for new version.')
+        }
+      }
+      /*
+        listen for an update to the serviceworker's file.
+        This should fire on the first load of the web page, since
+        any serviceWorker file is different to nothing.
+        Also should fire if there is any difference in cached 
+        and server's serviceWorker file.
+
+        Dispatched when the service worker registration's
+        installing worker changes
+      */
+      registration.addEventListener('updatefound', function() {
+        //Listen for changes in the installing serviceWorker's state
+        //registration.installing.addEventListener('statechange', swRI);
+        registration.installing.addEventListener('statechange', function(e){
+          //Assume a serviceWorker keeps it's eventListeners
+          //when it goes from the installing, to waiting, then to active one.
+          //if not, addEventListener for waiting and active when required.
+          //yeah... seems to keep the eventlistener through it all.
+          if (e.target.state === 'installed') {
+            if (registration.active) {
+              upNotCheck('Update downloaded.<br>Please restart app for new version.');
+            }
+          }
+          else if (e.target.state === 'activated') {
+            upNotCheck('i')
+          }
+        });
+      });
+    }).catch(function(err) {
+      console.log('ServiceWorker registration failed: ', err)
+    });
+  }
 }
 
 function upNotCheck(msg) {
@@ -137,7 +141,6 @@ function upNotOpen(msg, extras) {
   '<div id="toastClose" class="buttonClose">X</div>' +
   '<div id="unp">' + msg + '</div>' + extras + '</div>';
 
-  newWindow.classList.add('letScroll');
   upSetClass(newWindow);
   closeButtonRight('toastClose');
   newWindow.style.top = (document.body.offsetHeight - (document.getElementById('unp').offsetHeight + document.getElementById('unp').offsetTop + 6)) + 'px';
@@ -211,7 +214,13 @@ function fPreload(fileName) {
     d = fileName[4];
   }
 
-  fLoad(a, b, c, d);
+  if (dev && fileName[2] === 'js') {
+    //load up the javascript files directly for ease of editing.
+    fLoadSimple(a, b);
+  }
+  else {
+    fLoad(a, b, c, d);
+  }
 }
 function fLoad(zSrc, zFileName, zType, zLoad) {
   //remove the dot and any slashes in the name, so that it can be used for the name of the progressbar
@@ -258,9 +267,7 @@ function fLoad(zSrc, zFileName, zType, zLoad) {
             if (zType === 'i') {
               a = 'img';
             }
-            else if (zType === 'a') {
-              a = 'audio';
-            } else if (zType === 'c') {
+            else if (zType === 'c') {
               a = 'link';
             }
           } else {
@@ -426,4 +433,21 @@ function filesLoadedCheck() {
 }
 function loaderReHeight() {
   document.getElementById('loading').style.top = ((window.innerHeight - document.getElementById('loading').offsetHeight) / 2) + 'px';
+}
+/*
+  fo ease of developing, directly load the js files into the DOM.
+  use var 'dev' for switching this and fLoad.
+  ONLY FOR JAVASCRIPT FILES.
+*/
+function fLoadSimple(zSrc, fileName) {
+  var firstScript = document.getElementsByTagName('script')[0];
+  var zScript = document.createElement('script');
+  //zScript.type = 'text/javascript'; //needed in modern browsers?!Q?
+  zScript.id = fileName + 'l';
+  zScript.src = zSrc;
+  zScript.addEventListener('load', function() {
+    this.id = this.id.slice(0, -1);
+    filesLoadedCheck();
+  });
+  firstScript.parentNode.insertBefore(zScript, firstScript);
 }

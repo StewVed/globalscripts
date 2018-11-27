@@ -1,4 +1,4 @@
-var zAppVersion = 'gs2017-05-27'
+var zAppVersion = 'gs2018-11-27'
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(zAppVersion).then(function(cache) {
     return cache.addAll([
@@ -19,6 +19,7 @@ self.addEventListener('install', function(event) {
       , './toolTips.js'
     ])
   }))
+  console.log('GlobalScripts cached!');
 });
 self.addEventListener('fetch', function(event) {
   event.respondWith(

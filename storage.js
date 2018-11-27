@@ -1,24 +1,31 @@
 var saveY;
 //use LS1 & LS2 for joining/splitting lines
 function storageCheck() {
-  if (localStorage) {
-    if (localStorage.length) {
-      //something is stored
-      var dataToLoad = storageLoad('AllowSave');
-      if (dataToLoad == 1) {
-        //user has said YES to saving.
-        saveY = 1;
-      } else if (dataToLoad == 0) {
-        //user has said NO to saving.
-        saveY = -1;
+  try {
+    if (localStorage) {
+      if (localStorage.length) {
+        //something is stored
+        var dataToLoad = storageLoad('AllowSave');
+        if (dataToLoad == 1) {
+          //user has said YES to saving.
+          saveY = 1;
+        } else if (dataToLoad == 0) {
+          //user has said NO to saving.
+          saveY = -1;
+        } else {
+          //either there is nothing saved yet, or something is amiss!
+          saveY = 0;
+        }
       } else {
-        //either there is nothing saved yet, or something is amiss!
         saveY = 0;
       }
-    } else {
-      saveY = 0;
     }
-  } else {
+    else {
+      upNotOpen('localStorage appears to be unavailable in this browser. Unable to save anything.','');
+      saveY = -1;
+    }
+  }
+  catch(e) {
     upNotOpen('localStorage appears to be unavailable in this browser. Unable to save anything.','');
     saveY = -1;
   }
