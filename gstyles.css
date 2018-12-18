@@ -30,7 +30,6 @@ ul {
   width: 100%;
   position: absolute;
 }
-
 .uButtons {
   text-align: center;
   margin: 0 .2em;
@@ -41,69 +40,67 @@ ul {
   display: inline-block;
   font: inherit;
 }
-
 .tipButton {
-  height: 3.7em;
-  width: 10em;
+  box-sizing: border-box;
+  box-shadow: 0 0 8px hsla(0,0%,0%,.5);
+  width: 45%;
   display: inline-block;
-  text-align: center;
   text-decoration: none;
-  margin: .1em;
-  padding: .3em;
+  margin: 1%;
+  padding: 2%;
+  overflow:hidden;
   color: black;
-  border: 1px solid black;
-  box-shadow: 0 0 10px hsla(0,0%,0%,.5);
-  border-radius: .75em;
+  border: 2px solid black;
+  border-radius: 100%;
+  box-shadow: 0em 0em 1% 1% black;
+  background: radial-gradient(circle at 25% 25%, hsl(0, 0%, 95%), hsl(0, 0%, 33%));
+  transition: 0.7s;
 }
-
+.tipButton:hover {
+  background: radial-gradient(circle at 25% 25%, hsl(0, 0%, 100%), hsl(0, 0%, 50%));
+  box-shadow: 0 0 16px hsla(0,0%,0%,0.7);
+  transition: 0.2s;
+}
+.tipButton:active {
+  background: radial-gradient(circle at 25% 25%, hsl(0, 0%, 80%), hsl(0, 0%, 20%));
+}
 .uButtonsDisabled {
   background: linear-gradient(hsl(0, 0%, 80%), hsl(0, 0%, 60%));
   opacity: 0.5;
 }
-
 .uButtonGrey {
   background: linear-gradient(hsl(0, 0%, 90%), hsl(0, 0%, 70%));
 }
-
 .uButtonGrey:hover {
   background: linear-gradient(hsl(0, 0%, 100%), hsl(0, 0%, 80%));
 }
-
 .uButtonGrey:active {
   background: linear-gradient(hsl(0, 0%, 80%), hsl(0, 0%, 60%));
 }
-
 .uButtonGreen {
   background: linear-gradient(hsl(120, 100%, 75%), hsl(120, 100%, 30%));
 }
-
 .uButtonGreen:hover {
   background: linear-gradient(hsl(120, 100%, 85%), hsl(120, 100%, 40%));
 }
-
 .uButtonGreen:active {
   background: linear-gradient(hsl(120, 100%, 60%), hsl(120, 100%, 20%));
 }
-
 .uButtonRed {
   background: linear-gradient(hsl(0, 100%, 75%), hsl(0, 100%, 30%));
 }
-
 .uButtonRed:hover {
   background: linear-gradient(hsl(0, 100%, 85%), hsl(0, 100%, 40%));
 }
-
 .uButtonRed:active {
   background: linear-gradient(hsl(0, 100%, 60%), hsl(0, 100%, 20%));
 }
-
 .uButtonLeft {
   border-radius: 5em 0 0 5em;
   margin-right: 0;
   border-right: 0;
   padding: .15em 0;
 }
-
 .uButtonMid {
   border-radius: 0;
   margin-left: 0;
@@ -112,7 +109,6 @@ ul {
   border-right: 0;
   padding: .15em 0;
 }
-
 .uButtonRight {
   border-radius: 0 5em 5em 0;
   margin-left: 0;
@@ -138,7 +134,6 @@ ul {
   border-bottom: 2px solid hsl(210, 100%, 50%);
   border-right: 2px solid hsl(210, 100%, 50%);
 }
-
 .settCont {
   position: absolute;
   top: 0;
@@ -155,7 +150,6 @@ ul {
   position: absolute;
   padding: 1.5em .8em;
 }
-
 .volCont {
   background: linear-gradient(90deg, hsl(240,100%,50%), hsl(180,100%,50%), hsl(120,100%,50%), hsl(60,100%,50%), hsl(0,100%,50%));
   border: .1em solid black;
@@ -180,7 +174,6 @@ ul {
   width: 3em;
   height: 3em;
 }
-
 .vImg {
   position: relative;
   margin: 0;
@@ -206,7 +199,6 @@ ul {
   border: 2px solid hsl(0, 0%, 50%);
   text-align: left;
 }
-
 .loadPi {
   position: relative;
   border-radius: inherit;
@@ -214,7 +206,6 @@ ul {
   width: 0%;
   background: linear-gradient(hsl(120, 100%, 90%), hsl(120, 100%, 40%));
 }
-
 .loadPc {
   border-radius: inherit;
   position: absolute;
@@ -226,7 +217,6 @@ ul {
   line-height: 24px;
   top: 0px;
 }
-
 .loadVV {
   position: relative;
   float: none;
@@ -234,7 +224,6 @@ ul {
   width: 25%;
   background: radial-gradient(farthest-side at 50% 50%, hsl(120, 100%, 50%), hsla(0, 100%, 50%, 0));
 }
-
 @keyframes Vom {
   from {left: 0%;}
   to {left: 75%;}
@@ -260,7 +249,6 @@ ul {
   60% {top: -25%;}
   100% {top: 0%;}
 }
-
 .buttonClose {
   font-weight: bold;
   padding: .05em 0.3em;
@@ -279,18 +267,14 @@ ul {
   border-bottom: .2em solid black;
   box-sizing: border-box;
 }
-
-
 .toolTipclass {
   color: #092;
   transition: color 0.4s;
 }
-
 .toolTipclass:hover {
   transition: color 0.8s;
   color: #04f;
 }
-
 .conty {
   float:left;
   margin:0px;
@@ -326,14 +310,12 @@ ul {
 .inputNo{
   background: linear-gradient(hsl(0, 100%, 90%), hsl(0, 100%, 75%));
 }
-
 #pupB {
   position: absolute;
   z-index: 96;
   background: black;
   opacity: 0;
 }
-
 #pup {
   position: absolute;
   box-sizing: border-box;
@@ -345,7 +327,6 @@ ul {
   opacity: 0;
   transition: opacity .4s;
 }
-
 #pupc {
   z-index: 97;
   position: absolute;
@@ -354,7 +335,6 @@ ul {
   opacity: 0;
   transition: opacity .4s;
 }
-
 #pupD {
   z-index: 99;
   position: absolute;
@@ -385,7 +365,6 @@ ul {
 .pupDcB {
   box-shadow: 2px 2px 10px black;
 }
-
 .balancer {
   border-radius: 2em;
   background: radial-gradient(farthest-side at 50% 50% , hsl(0, 0%, 100%),hsl(0, 0%, 70%));

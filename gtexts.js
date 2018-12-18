@@ -1,21 +1,4 @@
-var appBugs =
-  '<hr style=clear:both>'
-  + '<h1 style=margin-bottom:.2em;font-size:1.25em>'
-    + 'StewVed\'s standard notice:'
-  + '</h1>'
-  + '<p style=text-align:center;color:red;margin-top:0;line-height:1.5em;>'
-    + 'Warning: May contain Bugs!<br>'
-    + 'Cannot guarantee Bug free!<br>'
-    + 'Produced on a system where Buggy products are also made!'
-
-+ '-<br>Scroll Test!<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>1<br>'
-+ '-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>2<br>'
-+ '-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>3<br>'
-+ '-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>4<br>'
-+ '-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>5<br>X'
-  + '</p>'
-
-,  appAbout =
+var appAbout =
   '<hr style=clear:both>'
   + '<img alt="The Author" src="' + gs + 'images/StewVed.jpg" style="'
   + 'float:left;border-radius:0.7em;width:6em;margin:0 .5em .5em 0;">'
@@ -43,13 +26,25 @@ var appBugs =
   + '</p>'
 
 , appTips =
-    '<h2 class=B style=margin-bottom:.2em;font-size:1.25em>Free apps with your support!</h2>'
-      //Button-link to my Patreon site
-    + '<div class="tipButton uButtonGrey">'
-      + '<a class=\'ubLink\' href=\'https://www.patreon.com/stewved\' target=\'_blank\'><img class="imgSocs ubLink" ' + imgSocs + 'Patreon.png\');cursor:pointer;display:block;width:100%;height:100%;"' + imgDummy + '></a>'
-    + '</div>'
-      //PayPal Donate Button (modded)
-    + '<form class="tipButton uButtonGrey" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">' + '<input type="hidden" name="cmd" value="_s-xclick">' + '<input type="hidden" name="hosted_button_id" value="RJMCJX2TE8E4Y">'
-      + '<input type="image" class="imgSocs ubLink" ' + imgSocs + 'PaypalDonate.png\');height:100%;width:100%;display:block;cursor: pointer;" ' + imgDummy + ' name="submit" alt="PayPal – The safer, easier way to pay online.">'
-    + '</form>'
+  '<h2 class=B style=margin-bottom:.2em;font-size:1.25em>Free apps with your support!</h2>'
+    //Button-link to my Patreon site
+  + '<div class="tipButton uButtonGrey">'
+    + '<a class=\'ubLink\' href=\'https://www.patreon.com/stewved\' target=\'_blank\'><img class="imgSocs ubLink" ' + imgSocs + 'Patreon.png\');cursor:pointer;display:block;width:92%;margin:4%;overflow:hidden;"' + imgDummy + '></a>'
+  + '</div>'
+    //PayPal Donate Button (modded)
+  + '<form class="tipButton uButtonGrey" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">' + '<input type="hidden" name="cmd" value="_s-xclick">' + '<input type="hidden" name="hosted_button_id" value="RJMCJX2TE8E4Y">'
+    + '<input type="image" class="imgSocs ubLink" ' + imgSocs + 'PaypalDonate.png\');height:100%;width:100%;display:block;cursor: pointer;" ' + imgDummy + ' name="submit" alt="PayPal – The safer, easier way to pay online.">'
+  + '</form>'
+
+, appBugs =
+  '<hr style=clear:both>'
+  + '<h1 style=margin-bottom:.2em;font-size:1.25em>'
+    + 'StewVed\'s standard notice:'
+  + '</h1>'
+  + '<p style=text-align:center;color:red;margin-top:0;line-height:1.5em;>'
+    + 'Warning: May contain Bugs!<br>'
+    + 'Cannot guarantee Bug free!<br>'
+    + 'Produced on a system where Buggy products are also made!'
+  + '</p>'
+
 ;
