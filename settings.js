@@ -14,19 +14,11 @@ function settingsButton() {
 
 function settingsCreate() {
   //create a semi-opaque rounded rectangle on the top-right, and put the message into it.
-  var newElem = document.createElement('div');
+  var newElem = document.createElement('div')
+    , volControl = (typeof audioCtx ? zVol : '')
+  ;
   newElem.id = 'settCont';
-  newElem.classList = 'settCont';
-var zVol = '';
-  if (gameVars.vol) {
-    zVol =
-    '<div id="sli-vol-C" class="volCont">'
-      + '<div id="sli-vol-g" class="volGrad"></div>'
-      + '<div id="sli-vol-I" class="volInner">'
-        + '<div id="sli-vol-T" class="vImg">◢</div>' //◢ &#9698;
-      + '</div>'
-    + '</div>';
-  }
+
   newElem.innerHTML =
     '<div id="settInner" class="settInner">'
     //close button
@@ -37,7 +29,7 @@ var zVol = '';
     + '</div>'
     + '<br>'
     //volume slider:
-    + zVol
+    + volControl
     //+ '<div id="bAbout" class="uButtons uButtonGrey">About</div>'
     + '<div id="bChange" class="uButtons uButtonGrey">App ChangeLog</div>'
     + '<hr>' //Now for the Support buttons:
@@ -48,10 +40,13 @@ var zVol = '';
     ;
   document.body.appendChild(newElem);
 
-  if (gameVars.vol) {
+  if (typeof audioCtx) {
     //set the volume slider:
     mouseVars.start.target = document.getElementById('sli-vol-I');
     sliderUpdate([globVol], 0);
+    //check whether muted or not.
+    swapToggler('muteToggle');
+
   }
 
   closeButtonRight('setsClose');
@@ -62,27 +57,13 @@ var zVol = '';
 
   upSetClass(newElem);
 
-  //in the CSS, the left is set to -90% and width 90%
-  //so now we move it onto the screen from the left.
-  window.setTimeout(function(){
-    document.getElementById('settCont').style.left = 0;
-  }, 25);
 }
 
-function settingsClose1() {
-  if (document.getElementById('settCont')) {
-    //move the settings element back offscreen to the left
-    document.getElementById('settCont').style.transition = 'left .6s ease-in';
-    document.getElementById('settCont').style.left = '-100%';
-    //after it has moved offscreen, remove the whole thing.
-    window.setTimeout(function(){settingsClose2()},650);
-  }
+function settingsClose() {
+  //move the settings element back offscreen to the left
+  document.getElementById('settCont').style.transition = 'left .6s ease-in';
+  document.getElementById('settCont').style.left = '-100%';
 }
-function settingsClose2() {
-  if (document.getElementById('settCont')) {
-    document.body.removeChild(document.getElementById('settCont'));
-    if (window['settinsCloseEvent']) {
-      settinsCloseEvent();
-    }
-  }
+function settingsOpen() {
+  document.getElementById('settCont').style.left = 0;
 }

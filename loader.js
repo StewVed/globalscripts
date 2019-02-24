@@ -22,6 +22,17 @@ var zAll = '<span class="B'
 , isOffline = 0
 , loadingVars = []
 ;
+
+/*
+  Have a development mode based on whether the ip is local or not.
+  127.0.0.1 is generally a computer's local ip address.
+  Use window.location.hostname as I think that is just the base ip address
+*/
+var dev = ("127.0.0.1" == window.location.hostname);
+
+if (!dev) {
+  initServiceWorker();
+}
 //add service worker registration to the app:
 /*serviceworker (mostly) learned from:
   https://w3c.github.io/ServiceWorker/
@@ -29,10 +40,6 @@ var zAll = '<span class="B'
   https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
   Also simply by looking at the stuff in Chrome's Development tools environment while paused!
 */
-
-//for ease of debugging, comment out this so the serviceWorker doesn't cache files!
-initServiceWorker();
-
 function initServiceWorker() {
   if ('serviceWorker' in navigator) {
     /*

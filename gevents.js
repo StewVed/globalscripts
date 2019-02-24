@@ -335,7 +335,9 @@ function sliderUpdate(sliderPercent, sve) {
   if (mouseVars.start.target.id.split('-')[1] === 'vol') {
     //update the app's volume
     globVol = sliderPercent[0];
-    gameVars.vol.gain.value = (globVol / 100);
+    if (audioVolume) {
+      soundVolUpdate();
+    }
     if (mouseVars.start.target.style.background.length && sve) {
       storageSave('volume', globVol.toFixed(2));
     }

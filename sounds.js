@@ -1,11 +1,35 @@
+//audio vars - placed in the sound module so initialize.js can see if the project has sound.
+var audioSprite = null //prolly need this to be an array eventually!
+, audioCtx = null //must create the audioContext later. Thx google!
+, audioVolume = null
+, globVol = .54 //the volume in the game. keep even if muted.
+, isMuted = 0 //if the user mutes the audio, have that here.
+, zVol =
+    '<div id="muteToggle" class="uButtons uButtonGreen" style="font-size:1em;">&#128266;</div>'
+      + '<div id="sli-vol-C" class="volCont">&nbsp;'
+      + '<div id="sli-vol-I" class="volInner">'
+        + '<div id="sli-vol-T" class="vImg">◢</div>' //◢ &#9698;
+      + '</div>'
+    + '</div>';
+;
+
+function soundInit() {
+  audioCtx = new window.AudioContext()
+  audioVolume = audioCtx.createGain();
+  //now that the audio has ben initialized, run the app.
+  runApp();
+}
+function soundVolUpdate() {
+  audioVolume.gain.value = globVol;
+}
 function soundPlay(a) {
-  if (a) {
+  if (a && !isMuted) {
     var newSound = audioCtx.createBufferSource();
     var newGain = audioCtx.createGain();
     //specify the sound buffer to use
     newSound.buffer = audioSprite;
     //connect the volume to the audiobuffer
-    newSound.connect(newGain);
+    newSound.connect(audioVolume);
     //connect the gain to the destination
     newGain.connect(audioCtx.destination);
     //set the (gain) volume of the sound
@@ -55,11 +79,64 @@ function soundVol(num) {
 
 
 
+function playButton() {
+  /*
+    get the user to click/tap the display
+    before thegame beings, also giving the user
+    a chance to mute the game before it plays.
+    clicking the play button calls newGame();
+  */
+  //create a semi-opaque rounded rectangle on the top-right, and put the message into it.
+  var newElem = document.createElement('div');
+  newElem.id = 'pB';
+  newElem.classList = 'playOverlay';
+
+  newElem.innerHTML =
+    '<div id="playButtons">' +
+      //Play button
+      '<div id="playB" class="uButtons uButtonGreen" style="font-size:3em;">&nbsp;Play&nbsp;</div>' +
+      '<br><br>' +
+      /*
+        mute/unmute toggler
+        &#128266; &#x1F50A; - speaker with sound waves
+        &#128263; &#x1F507; - speaker with diagonal line through (muted)
+      */
+      '<div id="pmuteToggle" class="uButtons uButtonGreen" style="font-size:2em;">&#128266;</div>' +
+    '</div>'
+    ;
+  document.body.appendChild(newElem);
+  //if the games was muted before, then switch grey to green
+  if (!isMuted) {
+    swapToggler('pmuteToggle');
+  }
+
+}
+function MuteToggle() {
+  isMuted = isMuted == 1 ? 0 : 1;
+  swapToggler('muteToggle');
+  storageSave('muted', isMuted);
+  if (document.getElementById('pmuteToggle')) {
+    swapToggler('pmuteToggle');
+  }
+}
+function swapToggler(a) {
+  a = document.getElementById(a);
+  if (!isMuted) {
+    a.classList.remove('uButtonGrey');
+    a.classList.add('uButtonGreen');
+    a.innerHTML = '&#128266;';
+  }
+  else {
+    a.classList.remove('uButtonGreen');
+    a.classList.add('uButtonGrey');
+    a.innerHTML = '&#128263;';
+  }
+}
 
 
 
 //http://stackoverflow.com/questions/879152/how-do-i-make-javascript-beep
-//answered by Houshalter bout half way down, then editd for me :D
+//answered by Houshalter bout half way down, then edited for me :D
 //did this version cos it appears to be exact to the http://www.w3.org/TR/webaudio/ spec
 //and also what is found on MDN : https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API
 var musicNotes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
@@ -164,7 +241,7 @@ function tg_changeSlider(nowFrequency) {
   sliderPercent *= zDiff;
   document.getElementById('freq-I').style.left = sliderPercent + '%';
   //now change the color of the slider
-  var zVol = (globVol*100).toFixed(0);  
+  var zVol = (globVol*100).toFixed(0);
   var zNum = Math.round((240/100) * (100 - (globVol*100)));
   var zBack = 'radial-gradient(farthest-side at 33% 33% , hsl(' + zNum + 
   ',100%,90%), hsl(' + zNum + ',100%,55%), hsl(' + zNum + ', 100%, 33%))';
@@ -268,4 +345,58 @@ function pannerPlace(sliderPercent) {
 }
 function percentToPosition(num) {
   return (num / 100) * 3;
+}
+
+
+/*
+  From toddlearner/inputs.js
+  The idea is that ifthe project has no sound, it doesn't needed
+  a volume control, so again, it may as well be in this file
+  so that it is still modular.
+*/
+
+
+function volDown() {
+  mouseVars.start.target = document.getElementById('vol-Iv');
+  mouseVars.type = 'vol';
+  volMove();
+}
+function volMove() {
+  //find the percentage of the the slider's left
+  var zWidth = mouseVars.start.target.parentNode.offsetWidth;
+  var zLeft = mouseVars.start.target.parentNode.offsetLeft + document.getElementById('settns').offsetLeft;
+  var sliderLeft = mouseVars.current.x - zLeft + 2;
+  sliderLeft -= (mouseVars.start.target.offsetWidth / 2);
+  var sliderPercent = (sliderLeft / (zWidth - mouseVars.start.target.offsetWidth)) * 100;
+  if (sliderPercent < 0) {
+    sliderPercent = 0;
+  } else if (sliderPercent > 100) {
+    sliderPercent = 100;
+  }
+  globVol = (sliderPercent / 100);
+  updateVolume();
+  //document.getElementById('vol%').innerHTML = Math.round(sliderPercent) + '%';
+  //change the color of the slider ball to where the ball is
+  var zNum = Math.round((240/100) * (100-sliderPercent));
+  var zBack = 'radial-gradient(farthest-side at 33% 33% , hsl(' + zNum + 
+  ',100%,90%), hsl(' + zNum + ',100%,40%))';
+  mouseVars.start.target.style.background = zBack;
+  //recalculate to offset width of the slider iteself
+  var zDiff = (zWidth - mouseVars.start.target.offsetWidth) / zWidth;
+  sliderPercent *= zDiff;
+  mouseVars.start.target.style.left = sliderPercent + '%';
+}
+function volUpdate() {
+  var sliderPercent = (globVol * 100);
+  //recalculate to offset width of the slider iteself
+  var zDiff = (document.getElementById('vol-Cv').offsetWidth - document.getElementById('vol-Iv').offsetWidth) / document.getElementById('vol-Cv').offsetWidth;
+  sliderPercent *= zDiff;
+  document.getElementById('vol-Iv').style.left = sliderPercent + '%';
+  //now change the color of the slider
+  var zVol = (globVol*100).toFixed(0);  
+  var zNum = Math.round((240/100) * (100 - (globVol*100)));
+  var zBack = 'radial-gradient(farthest-side at 33% 33% , hsl(' + zNum + 
+  ',100%,90%), hsl(' + zNum + ',100%,55%), hsl(' + zNum + ',100%,33%))';
+
+  document.getElementById('vol-Iv').style.background = zBack;
 }

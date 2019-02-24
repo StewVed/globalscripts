@@ -359,9 +359,9 @@ function mouseClick() {
   if (targID === 'toastClose') {
     upNotClose();
   } else if (targID === 'sets') {
-    settingsCreate();
+    settingsOpen();
   } else if (targID === 'setsClose') {
-    settingsClose1();
+    settingsClose();
   } else if (targID === 'bAbout') {
     upNotOpen('About the Developer', appAbout);
   } else if (targID === 'bChange') {
@@ -373,6 +373,11 @@ function mouseClick() {
     upNotClose();
   } else if (targID === 'fsI' || targID === 'fs') {//fullscreen button
     fullScreenToggle();
+  } else if (targID === 'muteToggle' || targID === 'pmuteToggle') {//toggle audio mute.
+    MuteToggle();
+  } else if (targID === 'playB') {//Play button press for apps with sound
+    document.body.removeChild(document.getElementById('pB'));
+    soundInit()
   } else {
     mouseClickEvents();
   }

@@ -37,10 +37,6 @@ var killFS = (document.exitFullscreen || document.mozCancelFullScreen || documen
 , touchVars = []
 //vars to hold variables for the window
 , gameWindow = null
-, audioSprite = null
-//I hate vendor prefixes! Why not just keep to the W3 specs?!?!?!
-window.AudioContext = window.AudioContext || window.webkitAudioContext
-, audioCtx = new window.AudioContext()
 
 //tooltip system adapted from Webtop project
 , vPup = null
@@ -55,7 +51,6 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext
 }
 , LS1 = '@#~'
 , LS2 = '~#@'
-, globVol = 54 //the volume of the audio in the game.
 , saveY = 0 //whether the user allows saving to HTML5 local storage
 ;
 
@@ -81,9 +76,6 @@ function Init() {
   //for the moment, just use the default keyset:
   keysCurrent = parseFloat(storageLoad('keymap')) || keysDefault;
 
-  //check if the user has modified the volume level if not, default to 54%:
-  globVol = parseFloat(storageLoad('volume') || 54);
-
   //add the initContent function to the main project, and return
   //the html content of the app :)
   document.body.innerHTML = initContent();
@@ -92,14 +84,36 @@ function Init() {
   tooltipsAdd();
   //add my settings system to the project.
   settingsButton();
-  //now that everything is set up, make a recurring checker for button presses:
-  gamePadsButtonEventCheck();
+  settingsCreate();
+
+  /*
+    if this project has audio then:
+    add the "play" button with a mute toggler to get around
+    Google's decision to suspend a created audioContext
+    instead of preventing/muting a play attempt!
+  */
+  if (typeof audioCtx) {
+    //check if the user has modified the volume level if not, default to 54%:
+    globVol = parseFloat(storageLoad('volume') || 54);
+    //when the user activates the play button, runApp is called.
+    playButton();
+  }
+  else {
+    runApp();
+  }
+
+  //scale the UI to the available screen size
   resize();
 
+  //Because serviceworker updating events can be tempermental
+  //check for updates manually!
   versionCheck();
-  //once everything has been sorted, let the app know (if needed)
-  runApp();
+
+  //now that everything is set up, make a recurring checker for button presses:
+  gamePadsButtonEventCheck();
 }
+
+
 function tooltipsAdd() {
   document.body.innerHTML +=
     '<div id="pupB" class="ttElem"></div>'
@@ -142,7 +156,11 @@ function versionCheck() {
     Obviously this will only work for users who allow storage, and I
     will have to remember to update the zAppVersion on every release!
   */
-  var dataToLoad = storageLoad('appVersion');
+  var dataToLoad;
+  try {
+    dataToLoad = storageLoad('appVersion');
+  }catch(e){}
+
   if (dataToLoad) {
     if (zAppVersion != dataToLoad) {
       //webbapp has been updated!
