@@ -28,7 +28,7 @@ var appAbout =
 , appTips =
   '<h2 class=B style=margin-bottom:.2em;font-size:1.25em>Free apps with your support!</h2>'
     //PayPal Donate Button (modded)
-  + '<iframe style="border:0;width:100%;height:90%;" src="support-stewved/index.html" allowfullscreen=""></iframe>'
+  + '<iframe style="border:0;width:100%;height:90%;" src="https://stewved.co.uk/support-stewved/index.html" allowfullscreen=""></iframe>'
 
 , appBugs =
   '<hr style=clear:both>'
