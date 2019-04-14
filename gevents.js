@@ -68,6 +68,13 @@ function resizeCenter(a, b) {
 }
 
 function resize() {
+  /*
+  sooooon... use pure CSS scaling instead of javascript scaling!
+  --currently in development.
+  //try using the prototype CSS transform for scale and centering:
+  reScale();
+  return;
+*/
   //little fix for on-screen keyboards resizing screen space:
   if (document.activeElement.classList.contains('editEnable')) {
     //also could double-check by checking that the width hasn't changed:
@@ -229,7 +236,7 @@ function divScroller(targ, zCloseButton, zSpeed, zTime) {
     return;
   }
 
-  if (toScrollBy > 1 || toScrollBy < 1) {
+  if (toScrollBy > 1 || toScrollBy < -1) {
     if (scroller(targ, zCloseButton, toScrollBy)) {
       /*
         when hitting the top or bottom of the scroll,
@@ -356,3 +363,41 @@ function sliderColors(sliderPercent) {
   mouseVars.start.target.style.background = zBack;
 }
 
+/*
+  Let's try a new method or resizing...
+  CSS Transform !!!
+  this has two functions that I am very interested in:
+
+  scale(x,y)
+    This one is very interesing because I could render the app once,
+    then use the scale function to make it the correct size depenging
+    on the available screen size.
+
+  translate(-50%,-50%)
+    This seems to be a simple way of centering an element... like my
+    app container ('Cont') for example.
+    This would effectively replace all centering code.
+    CAVEAT: when scaled, the translate has to the altered by the amount
+    of translate scale applied. eg. scale(0.5) translate(-75%,-75%)
+    - I'd be surprised if there wasn't some way of making it linked,
+    but tis simple enough to take the scale amount and change the 
+    translate amount.
+*/
+
+function reScale() {
+  //use this instead of resize() for making the app cneter and fill the available screen space.
+
+  //make sure the container's styles are correct - put these in CSS file if I use this version
+  //after prototype is prooven to work!
+  document.getElementById('cont').style.left = '50%';
+  document.getElementById('cont').style.top = '50%';
+  document.getElementById('cont').style.position = 'relative';
+  //now for the scaling itself.
+    var xScale = initScreenWidth/screenWidth
+      , yScale = initScreenHeight/screenHeight
+    ;
+    var zScale = (xScale <= yScale) ? xScale : yScale;
+    var tScale = -50*zScale;
+    document.getElementById('cont').style.transform =
+    'scale('+zScale+') translate('+tScale+'%,'+tScale+'%)';
+}

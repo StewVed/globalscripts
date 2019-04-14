@@ -27,14 +27,8 @@ var appAbout =
 
 , appTips =
   '<h2 class=B style=margin-bottom:.2em;font-size:1.25em>Free apps with your support!</h2>'
-    //Button-link to my Patreon site
-  + '<div class="tipButton uButtonGrey">'
-    + '<a class=\'ubLink\' href=\'https://www.patreon.com/stewved\' target=\'_blank\'><img class="imgSocs ubLink" ' + imgSocs + 'Patreon.png\');cursor:pointer;display:block;width:92%;margin:4%;overflow:hidden;"' + imgDummy + '></a>'
-  + '</div>'
     //PayPal Donate Button (modded)
-  + '<form class="tipButton uButtonGrey" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">' + '<input type="hidden" name="cmd" value="_s-xclick">' + '<input type="hidden" name="hosted_button_id" value="RJMCJX2TE8E4Y">'
-    + '<input type="image" class="imgSocs ubLink" ' + imgSocs + 'PaypalDonate.png\');height:100%;width:100%;display:block;cursor: pointer;" ' + imgDummy + ' name="submit" alt="PayPal – The safer, easier way to pay online.">'
-  + '</form>'
+  + '<iframe style="border:0;width:100%;height:90%;" src="support-stewved/index.html" allowfullscreen=""></iframe>'
 
 , appBugs =
   '<hr style=clear:both>'

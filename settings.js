@@ -15,7 +15,7 @@ function settingsButton() {
 function settingsCreate() {
   //create a semi-opaque rounded rectangle on the top-right, and put the message into it.
   var newElem = document.createElement('div')
-    , volControl = (typeof audioCtx ? zVol : '')
+    , volControl = (typeof zVol != 'undefined') ? zVol : ''
   ;
   newElem.id = 'settCont';
 
@@ -40,7 +40,7 @@ function settingsCreate() {
     ;
   document.body.appendChild(newElem);
 
-  if (typeof audioCtx) {
+  if (volControl) {
     //set the volume slider:
     mouseVars.start.target = document.getElementById('sli-vol-I');
     sliderUpdate([globVol], 0);

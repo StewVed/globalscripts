@@ -92,7 +92,7 @@ function Init() {
     Google's decision to suspend a created audioContext
     instead of preventing/muting a play attempt!
   */
-  if (typeof audioCtx) {
+  if (typeof audioCtx != 'undefined') {
     //check if the user has modified the volume level if not, default to 54%:
     globVol = parseFloat(storageLoad('volume') || 54);
     //when the user activates the play button, runApp is called.
