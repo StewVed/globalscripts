@@ -1,4 +1,9 @@
-var appAbout =
+var imgDummy = ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMAAABIeJ9nAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjAAIAAAQAASDSLW8AAAAASUVORK5CYII="'
+  , baseIP = 'https://stewved.github.io/'
+  , gs = baseIP + 'globalscripts/'//for general stuff, like images and scripts.
+  , imgSocs = 'style="background:center/contain no-repeat url(\'' + gs + 'images/'
+
+  , appAbout =
   '<hr style=clear:both>'
   + '<img alt="The Author" src="' + gs + 'images/StewVed.jpg" style="'
   + 'float:left;border-radius:0.7em;width:6em;margin:0 .5em .5em 0;">'
@@ -30,19 +35,19 @@ var appAbout =
   + '<hr>'
   + '<div id=BraveBAT>'
   + '<a href="https://brave.com/ste944">'
-  + '<img border="0" alt="Brave Browser & BAT" src="../images/brave-bat-partnership.svg" width="75%">'
+  + '<img src="' + gs + 'images/brave-bat-partnership.svg" alt="Brave Browser & BAT" width="75%">'
   + '</a>'
   + '<p>Support me for <q>free</q> using BAT '
   + '<p id="BATp">Brave is a Chromium-based (think google chrome) browser that blocks adverts for you, so you have an uncluttered browsing experience.<br><br>'
   + 'The browser then gives BAT to websites that you have visited, depending on how long you\'ve stayed and how many times you have visited.</p>'
   + '<p>You can also <q>tip</q> a website (like this one!) my clicking on the BAT '
-  + '<img id="BAT" border="0" alt="Basic Attention Token" src="../images/logo-full-color.svg">'
+  + '<img id="BAT" src="' + gs + 'images/logo-full-color.svg" alt="Basic Attention Token" style="height:0.9em;">'
   + ' icon by the address bar.'
   + '</p>'
   + '<p>'
   + 'Download the Brave browser here:<br>'
   + '<a href="https://brave.com/ste944">'
-  + '<img border="0" alt="Download Brave Browser" src="../images/brave-logotype-dark.svg" width="50%">'
+  + '<img src="' + gs + 'images/brave-logotype-dark.svg" alt="Download Brave Browser" width="50%">'
   + '</a>'
   + '<br>'
   + 'This includes my referrer code to let Brave know that I sent you, and they give me some BAT for you just using the Brave browser <q>minimally</q> for at least 30 days.<br><span style="font-weight:bold;">Thank you!</span>'
@@ -50,13 +55,12 @@ var appAbout =
   + '</div>'
   + '<hr>'
   + '<div id=donations>'
-  '<h2 class=B style=margin-bottom:.2em;font-size:1.25em>Support StewVed through PayPal:</h2>'
+  + '<h2 class=B style=margin-bottom:.2em;font-size:1.25em>Support StewVed through PayPal:</h2>'
     //PayPal Donate Button (modded)
   + '<form class="tipButton uButtonGrey" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">' + '<input type="hidden" name="cmd" value="_s-xclick">' + '<input type="hidden" name="hosted_button_id" value="RJMCJX2TE8E4Y">'
     + '<input type="image" class="imgSocs ubLink" ' + imgSocs + 'PaypalDonate.png\');height:100%;width:100%;display:block;cursor: pointer;" ' + imgDummy + ' name="submit" alt="PayPal – The safer, easier way to pay online.">'
   + '</form>'
   + '</div>'
-  + '<hr>'
   + '<br>'
 
 

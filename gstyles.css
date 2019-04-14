@@ -64,6 +64,24 @@ ul {
 .tipButton:active {
   background: radial-gradient(circle at 25% 25%, hsl(0, 0%, 80%), hsl(0, 0%, 20%));
 }
+
+.imgSocs {
+  width: 40%;
+  vertical-align: middle;
+  cursor: default;
+}
+.ubLink {
+  font-weight: 700;
+  text-decoration: underline;
+  transition: opacity .7s;
+  opacity: .7;
+  color: black;
+}
+.ubLink:hover {
+  transition: opacity .3s;
+  opacity: 1;
+}
+
 .uButtonsDisabled {
   background: linear-gradient(hsl(0, 0%, 80%), hsl(0, 0%, 60%));
   opacity: 0.5;
