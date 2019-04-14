@@ -25,10 +25,41 @@ var appAbout =
     + 'web ever since!'
   + '</p>'
 
-, appTips =
+, supportStewved =
   '<h2 class=B style=margin-bottom:.2em;font-size:1.25em>Free apps with your support!</h2>'
+  + '<hr>'
+  + '<div id=BraveBAT>'
+  + '<a href="https://brave.com/ste944">'
+  + '<img border="0" alt="Brave Browser & BAT" src="../images/brave-bat-partnership.svg" width="75%">'
+  + '</a>'
+  + '<p>Support me for <q>free</q> using BAT '
+  + '<p id="BATp">Brave is a Chromium-based (think google chrome) browser that blocks adverts for you, so you have an uncluttered browsing experience.<br><br>'
+  + 'The browser then gives BAT to websites that you have visited, depending on how long you\'ve stayed and how many times you have visited.</p>'
+  + '<p>You can also <q>tip</q> a website (like this one!) my clicking on the BAT '
+  + '<img id="BAT" border="0" alt="Basic Attention Token" src="../images/logo-full-color.svg">'
+  + ' icon by the address bar.'
+  + '</p>'
+  + '<p>'
+  + 'Download the Brave browser here:<br>'
+  + '<a href="https://brave.com/ste944">'
+  + '<img border="0" alt="Download Brave Browser" src="../images/brave-logotype-dark.svg" width="50%">'
+  + '</a>'
+  + '<br>'
+  + 'This includes my referrer code to let Brave know that I sent you, and they give me some BAT for you just using the Brave browser <q>minimally</q> for at least 30 days.<br><span style="font-weight:bold;">Thank you!</span>'
+  + '</p>'
+  + '</div>'
+  + '<hr>'
+  + '<div id=donations>'
+  '<h2 class=B style=margin-bottom:.2em;font-size:1.25em>Support StewVed through PayPal:</h2>'
     //PayPal Donate Button (modded)
-  + '<iframe style="border:0;width:100%;height:90%;" src="https://stewved.co.uk/support-stewved/index.html" allowfullscreen=""></iframe>'
+  + '<form class="tipButton uButtonGrey" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">' + '<input type="hidden" name="cmd" value="_s-xclick">' + '<input type="hidden" name="hosted_button_id" value="RJMCJX2TE8E4Y">'
+    + '<input type="image" class="imgSocs ubLink" ' + imgSocs + 'PaypalDonate.png\');height:100%;width:100%;display:block;cursor: pointer;" ' + imgDummy + ' name="submit" alt="PayPal – The safer, easier way to pay online.">'
+  + '</form>'
+  + '</div>'
+  + '<hr>'
+  + '<br>'
+
+
 
 , appBugs =
   '<hr style=clear:both>'
