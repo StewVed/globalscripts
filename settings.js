@@ -33,7 +33,7 @@ function settingsCreate() {
     //+ '<div id="bAbout" class="uButtons uButtonGrey">About</div>'
     + '<div id="bChange" class="uButtons uButtonGrey">App ChangeLog</div>'
     + '<hr>' //Now for the Support buttons:
-    + appTips
+    + supportStewved
     + appAbout
     + appBugs
     + '</div>'
