@@ -28,7 +28,7 @@ var zAll = '<span class="B'
   127.0.0.1 is generally a computer's local ip address.
   Use window.location.hostname as I think that is just the base ip address
 */
-var dev = ("127.0.0.1" == window.location.hostname);
+var dev = (window.location.hostname == "127.0.0.1" || window.location.hostname == '');
 
 if (!dev) {
   initServiceWorker();

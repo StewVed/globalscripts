@@ -362,8 +362,8 @@ function mouseClick() {
     settingsOpen();
   } else if (targID === 'setsClose') {
     settingsClose();
-  } else if (targID === 'bAbout') {
-    upNotOpen('About the Developer', appAbout);
+  } else if (targID === 'bPrivacy') {
+    upNotOpen('Privacy', appPrivacy);
   } else if (targID === 'bChange') {
     upNotOpen('App ChangeLog', appCL);
   } /*else if (targID.slice(0, 3) === 'vol') {

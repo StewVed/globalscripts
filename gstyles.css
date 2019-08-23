@@ -82,7 +82,7 @@ ul {
   opacity: 1;
 }
 
-.uButtonsDisabled {
+.uButtonDisabled {
   background: linear-gradient(hsl(0, 0%, 80%), hsl(0, 0%, 60%));
   opacity: 0.5;
 }
@@ -277,8 +277,9 @@ ul {
   overflow: hidden;
   position: relative;
   width: 100%;
-  padding-bottom: 1.2em;
+  padding-bottom: 1em;
   border-bottom: .2em solid black;
+  margin-bottom: 1em;
   box-sizing: border-box;
 }
 .toolTipclass {

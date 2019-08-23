@@ -9,7 +9,7 @@ var imgDummy = ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMA
   + 'float:left;border-radius:0.7em;width:6em;margin:0 .5em .5em 0;">'
   + '<p style="text-align:justify;">'
     + 'Stewart Robinson (StewVed) is creating useful, fun, and educational '
-    + 'web (HTML5) applications, that are Free Open Source Software.'
+    + 'web (HTML5) applications that are Free Open Source Software (FOSS).'
   + '</p>'
 
  ,  appAboutEx =
@@ -63,8 +63,6 @@ var imgDummy = ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMA
   + '</div>'
   + '<br>'
 
-
-
 , appBugs =
   '<hr style=clear:both>'
   + '<h1 style=margin-bottom:.2em;font-size:1.25em>'
@@ -74,6 +72,12 @@ var imgDummy = ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMA
     + 'Warning: May contain Bugs!<br>'
     + 'Cannot guarantee Bug free!<br>'
     + 'Produced on a system where Buggy products are also made!'
+  + '</p>'
+
+, appPrivacy =
+    '<p style=text-align:center;>This app sends no data anywhere;<br>'
+  + 'everything is calculated and stored entirely within your browser.<br><br>'
+  + 'This also means if you clear the cache, any stored data is gone.<br><br>'
   + '</p>'
 
 ;
