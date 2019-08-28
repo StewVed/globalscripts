@@ -18,6 +18,16 @@ So, hard-code that file somewhere, and take a look at the verison.
 Anyway, Check out one of my webapps hosted here on GitHub, for how I've integrated it.
 
 
-Suggestions, tips/support, etc. welcome!
+Suggestions, tips/support, etc. welcome:
+https://github.com/StewVed/globalscripts/issues
+
+
 My Webtop and main site:
 http://stewved.co.uk
+
+
+StewVed's standard notice:
+
+Warning: May contain Bugs!
+Cannot guarantee Bug free!
+Produced on a system where Buggy products are also made!

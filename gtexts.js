@@ -1,6 +1,4 @@
 var imgDummy = ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMAAABIeJ9nAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjAAIAAAQAASDSLW8AAAAASUVORK5CYII="'
-  , baseIP = 'https://stewved.github.io/'
-  , gs = baseIP + 'globalscripts/'//for general stuff, like images and scripts.
   , imgSocs = 'style="background:center/contain no-repeat url(\'' + gs + 'images/'
 
   , appAbout =

@@ -49,15 +49,21 @@ function gamePadsButtonEventCheck() {
     }
   }
   //because there are no events for a gamepad, I must check for them myself...
-  //use animationFrame:
-  window.requestAnimationFrame(function() {
-    gamePadsButtonEventCheck();
-  });
+
+  if (gamePadVars[0]) {
+    //use animationFrame when there is a gamepad being used.
+    window.requestAnimationFrame(function() {
+      gamePadsButtonEventCheck();
+    });
+  } else {
+    //there are no current gamepads, so just check for a new one every second.
+    window.setTimeout(function() {
+      gamePadsButtonEventCheck();
+    }, 1000);
+  }
 }
 function keyNum(e) {
   return e.keyCode || window.event.keyCode;
-  //this is called when there is a keydown or keyup:
-  anEvent();
 }
 function keyDown(e) {
   var theKey = keyNum(e);
@@ -110,10 +116,14 @@ function mouseDown(e) {
   mouseVars.clickTimer = window.setTimeout(function() {
     mouseLongClick()
   }, 500);
-  mouseVars.current.target  = targ;
+  mouseVars.current.target = targ;
   mouseVars.current.time = new Date().getTime();
   mouseVars.current.x = e.clientX;
   mouseVars.current.y = e.clientY;
+  mouseVars.last.target = targ;
+  mouseVars.last.time = new Date().getTime();
+  mouseVars.last.x = e.clientX;
+  mouseVars.last.y = e.clientY;
   mouseVars.start.target = targ;
   mouseVars.start.time = new Date().getTime();
   mouseVars.start.x = e.clientX;
@@ -174,8 +184,20 @@ function mouseMove(e) {
   }
 
   bubbleStop(e);
-  //check for onmouseout/onmousein events!
-  if (gameVars.gameObjectLast !== gameVars.gameObject) {
+  //check for onmouseout/onmousein events
+  //if using canvas, check the game objects:
+  if (targ.id.slice(0, 4) === 'game') {
+    if (gameVars.gameObjectLast !== gameVars.gameObject) {
+      if (mouseVars.type === 'click') {
+        mouseVars.type = 'drag';
+        window.clearTimeout(mouseVars.clickTimer);
+      }
+      mouseMoveEnter(targ);
+      mouseMoveOut(targ);
+    }
+  }
+  //now the mouse version
+  else if (mouseVars.current.target !== mouseVars.last.target){
     if (mouseVars.type === 'click') {
       mouseVars.type = 'drag';
       window.clearTimeout(mouseVars.clickTimer);
@@ -183,6 +205,7 @@ function mouseMove(e) {
     mouseMoveEnter(targ);
     mouseMoveOut(targ);
   }
+
   //now onmouseover - this one is done always.
   mouseMoveOver(targ);
   //scroll the about/changelogs type dialogues
@@ -200,7 +223,13 @@ function mouseMove(e) {
     scrollVars.x = mouseVars.current.x;
     scrollVars.y = mouseVars.current.y;
   }
-
+  //update the last mouse events - copy current to last
+  mouseVars.last = {
+      target:mouseVars.current.target
+    , time:mouseVars.current.time
+    , x:mouseVars.current.x
+    , y:mouseVars.current.y};
+  //then update current.
   mouseVars.current = {target:targ, time:zTime, x:e.clientX, y:e.clientY};
 
   if (targ.classList.contains('toolTipclass')) {
@@ -234,12 +263,17 @@ function mouseMove(e) {
 
   if (mouseVars.type === 'drag' && mouseVars.start.target) {
     if (mouseVars.start.target.classList.contains('letScroll')) {
-      mouseVars.type = 'scrollable';
       //there is currently only one scrolling element at the moment.
       mouseVars.start.target = findUpperScrollable(mouseVars.start.target);
-      scrollVars.time = mouseVars.current.time;
-      scrollVars.x = mouseVars.current.x;
-      scrollVars.y = mouseVars.current.y;
+      //the inner element may not be tall enough to require scrolling:
+      if (mouseVars.start.target.offsetHeight > mouseVars.start.target.parentNode.offsetHeight) {
+        mouseVars.type = 'scrollable';
+        scrollVars.time = mouseVars.current.time;
+        scrollVars.x = mouseVars.current.x;
+        scrollVars.y = mouseVars.current.y;
+      } else {
+        mouseVars.type = 'notScrollable';
+      }
     }
   }
   if (mouseVars.type === 'sgDrag') {
@@ -257,7 +291,7 @@ function mouseMoveVarsUpdate(targ) {
 }
 
 function mouseUp(e) {
-  if (mouseVars.current.target.classList.contains('editEnable')) {
+  if (mouseVars.current.target == null || mouseVars.current.target.classList.contains('editEnable')) {
     return;
   }
   //if the pointer is not on an input, take the focus off of
@@ -339,14 +373,16 @@ function mouseWheel(e) {//for zooming in/out, changing speed, etc.
     delta = -1;
   }
 
-  if (targ.classList.contains('letScroll')) {
-    //very dodgy hard-code - only one thing can be scrolled.
-    //targ = document.getElementById('toastPopup');
+  // check for scrollable element and one who's height is taller than the parentNode's height
+  if (targ.classList.contains('letScroll') && mouseVars.type != 'notScrollable') {
     targ = findUpperScrollable(targ);
-    var zCloseButton = findCloseButton(targ);
-
-    //debugger;
-    divScroller(targ, zCloseButton, delta*1000, new Date().getTime());
+    if (targ.offsetHeight > targ.parentNode.offsetHeight) {
+      var zCloseButton = findCloseButton(targ);
+      divScroller(targ, zCloseButton, delta*1000, new Date().getTime());
+    } else {
+      mouseVars.type = 'notScrollable';
+      mouseWheelEvents(targ, delta);
+    }
   }
   else {
     mouseWheelEvents(targ, delta);

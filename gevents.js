@@ -15,7 +15,27 @@ function findTarget(e) {
   }
   return targ;
 }
+function findObject(e) {
+/*
+could I just use: boolean ctx.isPointInPath(path, x, y);
+*/
+  var ting = null;
+  var mx = (Math.floor((e.clientX - document.getElementById('cont').offsetLeft) / gameVars.scale));
+  var my = (Math.floor((e.clientY - document.getElementById('cont').offsetTop) / gameVars.scale));
 
+  for (var x = 0; x < zObjects.length; x++) {
+    if (
+      (mx >= zObjects[x].x && 
+      mx <= (zObjects[x].x + zSize))
+      &&
+      (my >= zObjects[x].y && 
+      my <= (zObjects[x].y + zSize))
+    ) {
+      ting = x;
+    }
+  }
+  return ting;
+}
 function findCloseButton(targ) {
   //if there is a close button, make sure it stays on-screen.
   var zElemChildList = targ.children;
@@ -49,11 +69,13 @@ function mouseClear() {
     , cursorStyle: null
     , clickTimer: null
     , current:{target:null, time:null, x:null, y:null}
+    , last:{target:null, time:null, x:null, y:null}
     , start:{target:null, time:null, x:null, y:null}
     , moved: 0
   }
   document.body.style.cursor = 'default';
 }
+
 function scrollClear() {
   scrollVars = {
     targ: null,
@@ -62,12 +84,13 @@ function scrollClear() {
   }
 }
 
-
 function resizeCenter(a, b) {
   return Math.round((a / 2) - (b / 2));
 }
 
 function resize() {
+  // call any custom resising code for the app
+  resizeEvents();
   /*
   sooooon... use pure CSS scaling instead of javascript scaling!
   --currently in development.
@@ -161,13 +184,6 @@ function resizeRatio(a, b) {
 function resizeEnd() {
   document.getElementById('cont').style.top = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight) + 'px';
   document.getElementById('cont').style.left = resizeCenter(document.body.offsetWidth, document.getElementById('cont').offsetWidth) + 'px';
-
-  if (document.getElementById('toastClose')) {
-    closeButtonRight('toastClose');
-  }
-  if (document.getElementById('setsClose')) {
-    closeButtonRight('setsClose');
-  }
 }
 
 function resizeCheckOrientation() {

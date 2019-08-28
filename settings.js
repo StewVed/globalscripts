@@ -49,7 +49,6 @@ function settingsCreate() {
 
   }
 
-  closeButtonRight('setsClose');
   //check for other things to go into the Settings panel
   if (window['settingsExtra']) {
     settingsExtra();
@@ -61,9 +60,12 @@ function settingsCreate() {
 
 function settingsClose() {
   //move the settings element back offscreen to the left
-  document.getElementById('settCont').style.transition = 'left .6s ease-in';
-  document.getElementById('settCont').style.left = '-100%';
+  document.getElementById('settCont').style.transition = 'left .4s ease-in';
+  document.getElementById('settCont').style.left = '';
+  document.getElementById('settCont').style.boxSizing = '';
 }
 function settingsOpen() {
+  document.getElementById('settCont').style.transition = '';
   document.getElementById('settCont').style.left = 0;
+  document.getElementById('settCont').style.boxSizing = 'content-box';
 }

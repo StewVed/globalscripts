@@ -1,14 +1,16 @@
-var zAppVersion = 'gs2019-08-24'
+var zAppVersion = 'gs2019-08-28';
+
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(zAppVersion).then(function(cache) {
     return cache.addAll([
-        './'
-      , './gcl.js'
+        './gcl.js'
       , './gevents.js'
       , './gstyles.css'
       , './gtexts.js'
-      , './images/Patreon.png'
       , './images/PaypalDonate.png'
+      , './images/brave-bat-partnership.svg'
+      , './images/logo-full-color.svg'
+      , './images/brave-logotype-dark.svg'
       , './images/StewVed.jpg'
       , './initialize.js'
       , './inputs.js'
@@ -19,7 +21,7 @@ self.addEventListener('install', function(event) {
       , './toolTips.js'
     ])
   }))
-  console.log('GlobalScripts cached!');
+  console.log('globalscripts files cached.');
 });
 self.addEventListener('fetch', function(event) {
   event.respondWith(
@@ -27,7 +29,7 @@ self.addEventListener('fetch', function(event) {
       return cacheResponse || fetch(event.request).then(function(netResponse) {
         return caches.open(zAppVersion).then(function(cache) {
           cache.put(event.request, netResponse.clone());
-          console.log(event.request.url + ' added to gs cache!');
+          console.log(event.request.url + ' added to globalscripts cache.');
           return netResponse;
         });
       });

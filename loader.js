@@ -9,18 +9,19 @@ var zAll = '<span class="B'
   , zImp = zAll + ' Gr">Improvement: </span>'
   , zBug = zAll + ' Re">Bug-Fix: </span>'
   , zDev = zAll + ' Or">Development: </span>'
-//from webtop project -
-, imgSocs = 'style="background:center/contain no-repeat url(\'' + gs + 'images/'
-//base64 code for an empty 1x1 png:
-, imgDummy = ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMAAABIeJ9nAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjAAIAAAQAASDSLW8AAAAASUVORK5CYII="'
 
-//vars for the game itself
-//put here so that I can check when the game has initialized
-, gameVars = null
-, isLoaded = 0
-, isUpdated = 0
-, isOffline = 0
-, loadingVars = []
+  //vars for the game itself
+  //put here so that I can check when the game has initialized
+  , gameVars = null
+  , isLoaded = 0
+  , isUpdated = 0
+  , isOffline = 0
+  , loadingVars = []
+
+  //set up the internet address for globalscripts and the base IP for images
+  , baseIP = window.location.href.slice(0,window.location.href.lastIndexOf('/', window.location.href.length - 2)) // woz 'https://stewved.github.io/' but I shouldn't hardcode.
+  , gs = baseIP + '/globalscripts/'//for general stuff, like images and scripts.
+
 ;
 
 /*
@@ -149,15 +150,8 @@ function upNotOpen(msg, extras) {
   '<div id="unp">' + msg + '</div>' + extras + '</div>';
 
   upSetClass(newWindow);
-  closeButtonRight('toastClose');
   newWindow.style.top = (document.body.offsetHeight - (document.getElementById('unp').offsetHeight + document.getElementById('unp').offsetTop + 6)) + 'px';
   newWindow.style.height = (document.getElementById('unp').offsetHeight + document.getElementById('unp').offsetTop + 6) + 'px';
-}
-function closeButtonRight(zName) {
-    //set close button to the right.
-  document.getElementById(zName).style.left = 
-    (document.getElementById(zName).parentNode.clientWidth
-     - document.getElementById(zName).offsetWidth) + 'px';
 }
 function upSetClass(zElem) {
   var zElemChildList = zElem.children;
@@ -176,7 +170,7 @@ function upSetClass(zElem) {
 }
 function upNotClose() {
   if (document.getElementById('toastPopup')) {
-    document.getElementById('toastPopup').style.transition = '.3s ease-in';
+    document.getElementById('toastPopup').style.transition = '.4s ease-in';
     document.getElementById('toastPopup').style.top = '100%';
     window.setTimeout(function() {
       if (document.getElementById('toastContainer')) {
@@ -207,7 +201,7 @@ for (var fileName of fileList) {
 function fPreload(fileName) {
   a = fileName[0] + fileName[1] + '.' + fileName[2]; //pre address - careful of CORS!
   b = fileName[1]; //the file name. No '.' dots allowed :D
-  c = ''; // for images and audio, where special stuff has to happen.  
+  c = ''; // for images and audio, where special stuff has to happen.
   d = ''; //custom function call on load. (if needed)
 
   if (fileName.length == 4) {

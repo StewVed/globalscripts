@@ -30,16 +30,6 @@ ul {
   width: 100%;
   position: absolute;
 }
-.uButtons {
-  text-align: center;
-  margin: 0 .2em;
-  padding: 0.15em 0.8em;
-  color: black;
-  border: .1em solid black;
-  border-radius: 5em;
-  display: inline-block;
-  font: inherit;
-}
 .tipButton {
   box-sizing: border-box;
   box-shadow: 0 0 8px hsla(0,0%,0%,.5);
@@ -81,7 +71,16 @@ ul {
   transition: opacity .3s;
   opacity: 1;
 }
-
+.uButtons {
+  text-align: center;
+  margin: 0 .2em;
+  padding: 0.15em 0.8em;
+  color: black;
+  border: .1em solid black;
+  border-radius: 5em;
+  display: inline-block;
+  font: inherit;
+}
 .uButtonDisabled {
   background: linear-gradient(hsl(0, 0%, 80%), hsl(0, 0%, 60%));
   opacity: 0.5;
@@ -103,6 +102,15 @@ ul {
 }
 .uButtonGreen:active {
   background: linear-gradient(hsl(120, 100%, 60%), hsl(120, 100%, 20%));
+}
+.uButtonOrange {
+  background: linear-gradient(hsl(40, 100%, 85%), hsl(40, 100%, 40%));
+}
+.uButtonOrange:hover {
+  background: linear-gradient(hsl(40, 100%, 95%), hsl(40, 100%, 50%));
+}
+.uButtonOrange:active {
+  background: linear-gradient(hsl(40, 100%, 70%), hsl(40, 100%, 30%));
 }
 .uButtonRed {
   background: linear-gradient(hsl(0, 100%, 75%), hsl(0, 100%, 30%));
@@ -145,6 +153,7 @@ ul {
 }
 .settB {
   position: absolute;
+  top: 0;
   padding: .2em .5em .2em .4em;
   line-height: 125%;
   font-size: 125%;
@@ -160,7 +169,7 @@ ul {
   width: 100%;
   background-color: hsl(0, 0%, 100%);
   border-right: 4px solid hsl(210, 100%, 50%);
-  transition: left .6s ease-out;
+  transition: left 0.6s ease-out;
   text-align: center;
   box-sizing: border-box;
 }
@@ -269,6 +278,7 @@ ul {
   font-size: 1.5em;
   position: absolute;
   top: 0px;
+  right: 0px;
 }
 #unp {
   text-align: center;
