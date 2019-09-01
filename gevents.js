@@ -312,7 +312,18 @@ function fullScreenToggle() {
 function sliderMoveH() {
   //find the percentage of the the slider's left
   var zWidth = mouseVars.start.target.parentNode.offsetWidth;
-  var zLeft = mouseVars.start.target.parentNode.offsetLeft + document.getElementById('settCont').offsetLeft;
+
+  //go through all of the parentNodes and add their offsetLefts
+  var zLeft = 0;
+  var targParent = mouseVars.start.target.parentNode;
+  //this should go all the way up to #document.
+  while (targParent && isFinite(targParent.offsetLeft)) {
+    //add this parent's offsetLeft to the total
+    zLeft += targParent.offsetLeft;
+    //move to the next parentNode:
+    targParent = targParent.parentNode;
+  }
+
   var sliderLeft = mouseVars.current.x - zLeft + 2;
   sliderLeft -= (mouseVars.start.target.offsetWidth / 2);
   var sliderPercent = [(sliderLeft / (zWidth - mouseVars.start.target.offsetWidth)) * 100];
@@ -329,12 +340,25 @@ function sliderMoveH() {
 }
 
 function sliderMoveV() {
-  //find the percentage of the the slider's left
+  //find the percentage of the the slider's top
   var zHeight = mouseVars.start.target.parentNode.offsetHeight;
-  var zTop = mouseVars.start.target.parentNode.offsetTop + document.getElementById('cont').offsetTop;
+
+  //go through all of the parentNodes and add their offsetTops
+  var zTop = 0;
+  var targParent = mouseVars.start.target.parentNode;
+  //this should go all the way up to #document.
+  while (targParent && isFinite(targParent.offsetTop)) {
+    //add this parent's top to the total
+    zTop += targParent.offsetTop;
+    //move to the next parentNode:
+    targParent = targParent.parentNode;
+  }
+  //calculate where the slider should be:
   var sliderTop = mouseVars.current.y - zTop + 2;
+  //take half of the height of the target so it is in the middle:
   sliderTop -= (mouseVars.start.target.offsetHeight / 2);
   var sliderPercent = (sliderTop / (zHeight - mouseVars.start.target.offsetHeight)) * 100;
+  //make sure the slider is not over the bounds of the parentNode.
   if (sliderPercent < 0) {
     sliderPercent = 0;
   } else if (sliderPercent > 100) {

@@ -105,10 +105,6 @@ function Init() {
   //scale the UI to the available screen size
   resize();
 
-  //Because serviceworker updating events can be tempermental
-  //check for updates manually!
-  versionCheck();
-
   //now that everything is set up, make a recurring checker for button presses:
   gamePadsButtonEventCheck();
 }
@@ -144,32 +140,4 @@ function addEventListeners() {
   window.addEventListener('mouseup', mouseUp, false);
   window.addEventListener('keydown', keyDown, false);
   window.addEventListener('keyup', keyUp, false);
-}
-function versionCheck() {
-  /*
-    since every single event listener for updated sw fails to fire,
-    I assume that the actual updating (when dev tools is not active)
-    happens when the page is closed.
-    Whatever.
-    I will just do a storage-based version check.
-
-    Obviously this will only work for users who allow storage, and I
-    will have to remember to update the zAppVersion on every release!
-  */
-  var dataToLoad;
-  try {
-    dataToLoad = storageLoad('appVersion');
-  }catch(e){}
-
-  if (dataToLoad) {
-    if (zAppVersion != dataToLoad) {
-      //webbapp has been updated!
-      upNotCheck('u');
-      storageSave('appVersion', zAppVersion);
-    }
-  }
-  else if (saveY) {
-    //only bother saving if saving is allowed!
-    storageSave('appVersion', zAppVersion);
-  }
 }

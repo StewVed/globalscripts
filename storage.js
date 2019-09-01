@@ -36,7 +36,6 @@ function storageChoose(zChoice) {
       , b = saveY[1];
     saveY = 1;
     storageSave('AllowSave', 1);
-    storageSave('appVersion', zAppVersion);
     storageSave(a, b);
   } else {
     //disable saving for this session.

@@ -21,7 +21,7 @@ var zAll = '<span class="B'
   //set up the internet address for globalscripts and the base IP for images
   , baseIP = window.location.href.slice(0,window.location.href.lastIndexOf('/', window.location.href.length - 2)) // woz 'https://stewved.github.io/' but I shouldn't hardcode.
   , gs = baseIP + '/globalscripts/'//for general stuff, like images and scripts.
-
+  , isUpdating = 0; // to see if a serviceWorker is installing or updating.
 ;
 
 /*
@@ -43,54 +43,38 @@ if (!dev) {
 */
 function initServiceWorker() {
   if ('serviceWorker' in navigator) {
-    /*
-      https://w3c.github.io/ServiceWorker/#install
-      2017-03-14 have given up with all statechange:activated event checks
-      they just don't work, and so I assume the actual activation of a new
-      serviceWorker takes place when the page is closed or some other time
-      when these eventListeners are not listening.
-
-      I've created a localStorage version check instead!
-    */
-
-    //I wander whether I can hard-code a full web address for this?
+    //Register the globalscripts serviceworker to cache all global files.
     navigator.serviceWorker.register(gs + 'sw.js').catch(function(err) {
       console.log('GS SW registration failed: ', err)
     });
+
+    //now register the website's own serviceworker to cache it's files.
     navigator.serviceWorker.register('sw.js').then(function(registration) {
       /*
-        if there is a waiting serviceWorker, listen for changes in it's state.
-        When the page closes,
-        Upon page reload, the waiting serviceWorker is
-        promoted to the active serviceWorker.
+        if there is an active serviceWorker, then this is not the
+        first install of the webapp.
+        this also means that an 'activated' statechange event means
+        an update of the webapp, and not an install.
+
+        So, is there an active serviceWorker? (isUpdating)
       */
-      if (registration.waiting) {
-        if (registration.active && registration.waiting.state === 'installed') {
-          //inform user that a hard-reload is needed, not just F5
-          upNotCheck('Waiting to update...<br>Please close then re-open app for new version.')
-        }
-      }
+      isUpdating = Boolean(registration.active);
+
       /*
         listen for an update to the serviceworker's file.
         This should fire on the first load of the web page, since
         any serviceWorker file is different to nothing.
-        Also should fire if there is any difference in cached 
+        Also should fire if there is any difference in cached
         and server's serviceWorker file.
-
-        Dispatched when the service worker registration's
-        installing worker changes
       */
       registration.addEventListener('updatefound', function() {
         //Listen for changes in the installing serviceWorker's state
-        //registration.installing.addEventListener('statechange', swRI);
         registration.installing.addEventListener('statechange', function(e){
-          //Assume a serviceWorker keeps it's eventListeners
-          //when it goes from the installing, to waiting, then to active one.
-          //if not, addEventListener for waiting and active when required.
-          //yeah... seems to keep the eventlistener through it all.
           if (e.target.state === 'installed') {
             if (registration.active) {
-              upNotCheck('Update downloaded.<br>Please restart app for new version.');
+              upNotCheck(
+                'updating app...'
+              );
             }
           }
           else if (e.target.state === 'activated') {
@@ -105,18 +89,25 @@ function initServiceWorker() {
 }
 
 function upNotCheck(msg) {
-  if (document.getElementById('cont')) {
+  //wait for everything to load and the webapp to be displayed.
+  if (!document.getElementById('loading')) {
     //the main content has been added to the document, so it
     //is safe to add the 'toast' popup now.
     if (msg.length < 3) {
       if (msg === 'i') {
-        upNotOpen('You can use this webapp while offline!','');
-      }
-      else if (msg === 'u') {
-        upNotOpen(
-          'app Updated!<br>scroll up to see what&apos;s new.'
-          , appCL
-        );
+        if (isUpdating) {
+          upNotOpen(
+            'update installed! '
+            + '<button class="foodButton diaButton uButtonGreen"'
+            + ' type="button" style="width:5em;"'
+            + ' onclick="reloadDrFreeman()">Restart</button>'
+            + '<br>scroll up to see what&apos;s new:'
+            , appCL
+          );
+        }
+        else {
+          upNotOpen('You can use this webapp while offline!','');
+        }
       }
     }
     else {
@@ -127,7 +118,7 @@ function upNotCheck(msg) {
     //not yet initialized, so wait a bit then check again.
     window.setTimeout(function() {
       upNotCheck(msg);
-    }, 200);
+    }, 500);
   }
 }
 function upNotOpen(msg, extras) {
@@ -353,7 +344,7 @@ function fileProgress(e, zFileName) {
         v1 - non-hack; move the inner progress back and forth in knight-rider/cylon/linux style...
         heh thinking about it.. maybe I should make it glowing... but still green!
       */
-      //try pure css animation for the job:  
+      //try pure css animation for the job:
       if (!loadingVars[zFileName].sizeUnknown) {
         loadingVars[zFileName].sizeUnknown = 1;
         loadingVars[zFileName].endCheckTimer = window.setInterval(function() {
@@ -451,4 +442,17 @@ function fLoadSimple(zSrc, fileName) {
     filesLoadedCheck();
   });
   firstScript.parentNode.insertBefore(zScript, firstScript);
+}
+
+/*
+  true makes the window reload ignoring cache - load from server.
+  HL3 confirmed XD
+*/
+function reloadDrFreeman() {
+  location.reload(true);
+  /* something like this to call it.
+  + '<button class="foodButton diaButton uButtonGreen"'
+  + ' type="button" style="width:5em;"'
+  + ' onclick="reloadDrFreeman()">Update</button>'
+  */
 }
