@@ -176,6 +176,8 @@ ul {
 .settInner {
   position: absolute;
   padding: 1.5em .8em;
+  width: inherit;
+  box-sizing: border-box;
 }
 
 
@@ -273,6 +275,7 @@ ul {
   100% {top: 0%;}
 }
 .buttonClose {
+  z-index: 32;
   font-weight: bold;
   padding: .05em 0.3em;
   font-size: 1.5em;

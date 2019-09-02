@@ -32,7 +32,7 @@ var zAll = '<span class="B'
 var dev = (window.location.hostname == "127.0.0.1" || window.location.hostname == '');
 
 if (!dev) {
-  initServiceWorker();
+  initServiceWorkers();
 }
 //add service worker registration to the app:
 /*serviceworker (mostly) learned from:
@@ -41,7 +41,7 @@ if (!dev) {
   https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
   Also simply by looking at the stuff in Chrome's Development tools environment while paused!
 */
-function initServiceWorker() {
+function initServiceWorkers() {
   if ('serviceWorker' in navigator) {
     //Register the globalscripts serviceworker to cache all global files.
     navigator.serviceWorker.register(gs + 'sw.js').catch(function(err) {
@@ -59,7 +59,6 @@ function initServiceWorker() {
         So, is there an active serviceWorker? (isUpdating)
       */
       isUpdating = Boolean(registration.active);
-
       /*
         listen for an update to the serviceworker's file.
         This should fire on the first load of the web page, since

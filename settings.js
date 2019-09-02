@@ -1,7 +1,7 @@
 /*
-Generally, there is a hanburger on the top-left, though some people
-put it on the right. I think Google do the top left, and because
-they are so ubiquitus, I will choose to place my settings thing there.
+  Generally, there is a hamburger on the top-left, though some people
+  put it on the right. I think Google do the top left, and because
+  they are so ubiquitus, I will choose to place my settings thing there.
 */
 
 function settingsButton() {
@@ -20,9 +20,9 @@ function settingsCreate() {
   newElem.id = 'settCont';
 
   newElem.innerHTML =
-    '<div id="settInner" class="settInner">'
     //close button
-    + '<div id="setsClose" class="buttonClose">X</div>'
+    '<div id="setsClose" class="buttonClose">X</div>'
+    + '<div id="settInner" class="settInner">'
     //fullscreen toggle button
     + '<div id="fs" class="uButtons uButtonGreen">'
       + '<span id="fsI" class="fsInner">&#9974;</span>&nbsp;Fullscreen'
