@@ -80,12 +80,6 @@ function Init() {
   //the html content of the app :)
   document.body.innerHTML = initContent();
 
-  //add the tooltip elements:
-  tooltipsAdd();
-  //add my settings system to the project.
-  settingsButton();
-  settingsCreate();
-
   /*
     if this project has audio then:
     add the "play" button with a mute toggler to get around
@@ -101,6 +95,11 @@ function Init() {
   else {
     runApp();
   }
+
+  //add the tooltip elements:
+  tooltipsAdd();
+  //add my settings system to the project.
+  settingsCreate();
 
   //scale the UI to the available screen size
   resize();

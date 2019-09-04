@@ -3,6 +3,7 @@
  * to give the user a progressbar for each file that is being loaded.
  * does not appear to work on GitHub at the moment though.
 */
+
 //text shortcodes put here in case the app's text loads before gtexts.
 var zAll = '<span class="B'
   , zNew = zAll + ' Bl">New Stuff: </span>'
@@ -21,7 +22,8 @@ var zAll = '<span class="B'
   //set up the internet address for globalscripts and the base IP for images
   , baseIP = window.location.href.slice(0,window.location.href.lastIndexOf('/', window.location.href.length - 2)) // woz 'https://stewved.github.io/' but I shouldn't hardcode.
   , gs = baseIP + '/globalscripts/'//for general stuff, like images and scripts.
-  , isUpdating = 0; // to see if a serviceWorker is installing or updating.
+  , isUpdating = 0 // to see if a serviceWorker is installing or updating.
+  , gUpdating = 0 // globalscripts serviceWorker active (a) | installed (i) | updated (u) | error (e)
 ;
 
 /*
@@ -41,24 +43,23 @@ if (!dev) {
   https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
   Also simply by looking at the stuff in Chrome's Development tools environment while paused!
 */
+var aSWR, gSWR; //to hold the serviceworker registrations.
 function initServiceWorkers() {
   if ('serviceWorker' in navigator) {
     //Register the globalscripts serviceworker to cache all global files.
-    navigator.serviceWorker.register(gs + 'sw.js').catch(function(err) {
-      console.log('GS SW registration failed: ', err)
-    });
-
-    //now register the website's own serviceworker to cache it's files.
-    navigator.serviceWorker.register('sw.js').then(function(registration) {
+    navigator.serviceWorker.register(gs + 'sw.js').then(function(gregistration) {
+      gSWR = gregistration;
       /*
         if there is an active serviceWorker, then this is not the
         first install of the webapp.
         this also means that an 'activated' statechange event means
         an update of the webapp, and not an install.
 
-        So, is there an active serviceWorker? (isUpdating)
+        So, is there an active serviceWorker?
       */
-      isUpdating = Boolean(registration.active);
+      if (gregistration.active) {
+         gUpdating = 'a'; //a for active.
+      }
       /*
         listen for an update to the serviceworker's file.
         This should fire on the first load of the web page, since
@@ -66,24 +67,125 @@ function initServiceWorkers() {
         Also should fire if there is any difference in cached
         and server's serviceWorker file.
       */
-      registration.addEventListener('updatefound', function() {
+      gregistration.addEventListener('updatefound', function() {
         //Listen for changes in the installing serviceWorker's state
-        registration.installing.addEventListener('statechange', function(e){
+        gregistration.installing.addEventListener('statechange', function(e){
           if (e.target.state === 'installed') {
-            if (registration.active) {
-              upNotCheck(
-                'updating app...'
-              );
+            if (gUpdating === 'a') {
+              upNotCheck('updating base files...');
             }
           }
           else if (e.target.state === 'activated') {
-            upNotCheck('i')
+            if (gUpdating === 'a') {
+              gUpdating = 'u'; // u for updated.
+              upNotCheck('Base files updated.<br>'
+              + '<button class="uButtons uButtonGreen"'
+              + ' type="button"'
+              + ' onclick="reloadDrFreeman()">Restart for updated version</button>'
+              );
+            }
+            else {
+              gUpdating = 'i'; // i for installed.
+              upNotCheck('i');
+            }
           }
         });
       });
     }).catch(function(err) {
+      gUpdating = 'e' // e for error.
+      console.log('GS SW registration failed: ', err)
+    });
+
+    //now register the website's own serviceworker to cache it's files.
+    navigator.serviceWorker.register('sw.js').then(function(registration) {
+      aSWR = registration;
+      if (registration.active) {
+         isUpdating = 'a';
+      }
+      registration.addEventListener('updatefound', function() {
+        registration.installing.addEventListener('statechange', function(e){
+          if (e.target.state === 'installed') {
+            if (isUpdating === 'a') {
+              upNotCheck('updating webapp...');
+            }
+          }
+          else if (e.target.state === 'activated') {
+            if (isUpdating === 'a') {
+              isUpdating = 'u';
+              upNotCheck('i');
+            }
+            else {
+              isUpdating = 'i';
+              upNotCheck('i');
+            }
+          }
+        });
+      });
+    }).catch(function(err) {
+      isUpdating = 'e'
       console.log('ServiceWorker registration failed: ', err)
     });
+  }
+}
+
+function updateServiceWorkers() {
+  /*
+    I waited 2 days for globalscripts to update itself
+    and it didn't despite my closing the webapp, and even
+    restarting the device and loading it back up.
+    The sw.js file was changed which should trigger a
+    serviceWorker update, but that didn't happen.
+
+    Also putting this in here will mean that I can manually
+    update as soon as I have uploaded a change, just to make
+    sure the updated code works as I intended.
+
+    Besides, who doesn't like a "check for updates" button :D
+  */
+  if (gSWR && aSWR && document.getElementById('uSW').classList.contains('uButtonGreen')) {
+    //reset the vars for installing state of the serviceWorkers:
+    isUpdating = aSWR.active ? 'a' : 0;
+    gUpdating = gSWR.active ? 'a' : 0;
+    //mouseVars.button = null == e.which ? e.button : e.which;
+    //call the update function of the serviceWorker registrations:
+    gSWR.update();
+    aSWR.update();
+  }
+
+  //now grey out the button so it doesn't get spammed.
+  document.getElementById('uSW').classList.remove('uButtonGreen');
+  document.getElementById('uSW').classList.add('uButtonGrey');
+
+  /*
+    so, how to tell the user whether there is an update?
+    The eventlistener should inform the user for the main
+    app, though how about globalscripts?
+
+    Add an eventlistener for that as well I suppose.
+    how about a changelog for it? maybe later!
+
+    now for the tricky part... how to tell the user when there
+    is no update?
+    find a way of waiting until the update is complete.
+    if no update was found, then popup that it is up to date.
+  */
+
+  window.setTimeout(function() {
+    updateSWresult();
+  }, 2000);
+}
+
+function updateSWresult() {
+  /*
+    after say 2 seconds, then if is/gUpdating are 0, then
+    say it is up to date, e would be popup cannot update.
+    anything else should have put a popup up already :D
+  */
+  if (isUpdating === 0 && gUpdating === 0) {
+    upNotCheck('No new updates found.');
+  }
+  else if (isUpdating === 'e' || gUpdating === 'e') {
+    upNotCheck('Error getting updates.');
   }
 }
 
@@ -94,18 +196,22 @@ function upNotCheck(msg) {
     //is safe to add the 'toast' popup now.
     if (msg.length < 3) {
       if (msg === 'i') {
-        if (isUpdating) {
+        if (isUpdating === 'u') {
           upNotOpen(
             'update installed! '
-            + '<button class="foodButton diaButton uButtonGreen"'
-            + ' type="button" style="width:5em;"'
+            + '<button class="uButtons uButtonGreen"'
+            + ' type="button"'
             + ' onclick="reloadDrFreeman()">Restart</button>'
-            + '<br>scroll up to see what&apos;s new:'
+            + '<br><br>scroll up to see what&apos;s new:'
             , appCL
           );
         }
-        else {
-          upNotOpen('You can use this webapp while offline!','');
+        // only if the app files and globalscripts are all installed can the app be available offline.
+        /*
+          if webapp is installed first time, and globalscripts are installed in any way (initial, installed, or updated)
+        */
+        else if (isUpdating === 'i' && (gUpdating === 'i' || gUpdating === 'u' || gUpdating === 'a')) {
+          upNotOpen('webapp files cached.<br>You can use this webapp while offline!','');
         }
       }
     }

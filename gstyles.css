@@ -172,6 +172,7 @@ ul {
   transition: left 0.6s ease-out;
   text-align: center;
   box-sizing: border-box;
+  z-index: 24; /* Brave on android 9 doesn't z-index like others! */
 }
 .settInner {
   position: absolute;
@@ -257,6 +258,7 @@ ul {
   position: absolute;
   width: 100%;
   box-sizing: border-box;
+  z-index: 64;
 }
 #toastPopup {
   box-sizing: border-box;
@@ -281,7 +283,7 @@ ul {
   font-size: 1.5em;
   position: absolute;
   top: 0px;
-  right: 0px;
+  right: 0;
 }
 #unp {
   text-align: center;

@@ -1,25 +1,22 @@
+function settingsCreate() {
 /*
   Generally, there is a hamburger on the top-left, though some people
   put it on the right. I think Google do the top left, and because
   they are so ubiquitus, I will choose to place my settings thing there.
 */
+  var newElem1 = document.createElement('div');
+  newElem1.id = 'sets';
+  newElem1.classList = 'settB';
+  newElem1.innerHTML = '&#9776;';
+  document.body.appendChild(newElem1);
 
-function settingsButton() {
-  var newElem = document.createElement('div');
-  newElem.id = 'sets';
-  newElem.classList = 'settB';
-  newElem.innerHTML = '&#9776;';
-  document.body.appendChild(newElem);
-}
-
-function settingsCreate() {
-  //create a semi-opaque rounded rectangle on the top-right, and put the message into it.
-  var newElem = document.createElement('div')
-    , volControl = (typeof zVol != 'undefined') ? zVol : ''
+  // If this project has sound, add a global volume slider.
+  var volControl = (typeof zVol != 'undefined') ? zVol : ''
+    , newElem2 = document.createElement('div')
   ;
-  newElem.id = 'settCont';
+  newElem2.id = 'settCont';
 
-  newElem.innerHTML =
+  newElem2.innerHTML =
     //close button
     '<div id="setsClose" class="buttonClose">X</div>'
     + '<div id="settInner" class="settInner">'
@@ -31,14 +28,14 @@ function settingsCreate() {
     //volume slider:
     + volControl
     + '<div id="bPrivacy" class="uButtons uButtonGrey">Privacy</div>'
-    + '<div id="bChange" class="uButtons uButtonGrey">App ChangeLog</div>'
+    + '<div id="bChange" class="uButtons uButtonGrey">webapp changeLog</div>'
     + '<hr>' //Now for the Support buttons:
     + supportStewved
     + appAbout
     + appBugs
     + '</div>'
     ;
-  document.body.appendChild(newElem);
+  document.body.appendChild(newElem2);
 
   if (volControl) {
     //set the volume slider:
@@ -54,7 +51,7 @@ function settingsCreate() {
     settingsExtra();
   }
 
-  upSetClass(newElem);
+  upSetClass(newElem2);
 
 }
 

@@ -401,7 +401,11 @@ function mouseClick() {
   } else if (targID === 'bPrivacy') {
     upNotOpen('Privacy', appPrivacy);
   } else if (targID === 'bChange') {
-    upNotOpen('App ChangeLog', appCL);
+    upNotOpen('webapp changeLog<br>'
+      + '<button id="uSW" class="uButtons uButtonGreen"'
+      + ' type="button"'
+      + ' onclick="updateServiceWorkers()">Check for updates</button>'
+    , appCL);
   } /*else if (targID.slice(0, 3) === 'vol') {
     volDown();
   } */else if (targID.slice(0, 4) === 'stor') { //storage question.
