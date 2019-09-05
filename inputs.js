@@ -401,11 +401,14 @@ function mouseClick() {
   } else if (targID === 'bPrivacy') {
     upNotOpen('Privacy', appPrivacy);
   } else if (targID === 'bChange') {
-    upNotOpen('webapp changeLog<br>'
-      + '<button id="uSW" class="uButtons uButtonGreen"'
+    var updateButton = '';
+    if (gSWR && aSWR) {
+      updateButton = '<button id="uSW" class="uButtons uButtonGreen"'
       + ' type="button"'
       + ' onclick="updateServiceWorkers()">Check for updates</button>'
-    , appCL);
+    }
+
+    upNotOpen('webapp changeLog<br>' + updateButton, appCL);
   } /*else if (targID.slice(0, 3) === 'vol') {
     volDown();
   } */else if (targID.slice(0, 4) === 'stor') { //storage question.

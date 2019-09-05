@@ -64,7 +64,7 @@ var imgDummy = ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMA
 , appBugs =
   '<hr style=clear:both>'
   + '<h1 style=margin-bottom:.2em;font-size:1.25em>'
-    + 'StewVed\'s standard notice:'
+    + 'StewVed&apos;s standard notice:'
   + '</h1>'
   + '<p style=text-align:center;color:red;margin-top:0;line-height:1.5em;>'
     + 'Warning: May contain Bugs!<br>'

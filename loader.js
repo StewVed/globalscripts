@@ -142,14 +142,21 @@ function updateServiceWorkers() {
 
     Besides, who doesn't like a "check for updates" button :D
   */
-  if (gSWR && aSWR && document.getElementById('uSW').classList.contains('uButtonGreen')) {
-    //reset the vars for installing state of the serviceWorkers:
-    isUpdating = aSWR.active ? 'a' : 0;
-    gUpdating = gSWR.active ? 'a' : 0;
-    //mouseVars.button = null == e.which ? e.button : e.which;
-    //call the update function of the serviceWorker registrations:
-    gSWR.update();
-    aSWR.update();
+  if (document.getElementById('uSW').classList.contains('uButtonGreen')) {
+    if (gSWR && aSWR) {
+      //reset the vars for installing state of the serviceWorkers:
+      isUpdating = aSWR.active ? 'a' : 0;
+      gUpdating = gSWR.active ? 'a' : 0;
+      //mouseVars.button = null == e.which ? e.button : e.which;
+      //call the update function of the serviceWorker registrations:
+      gSWR.update();
+      aSWR.update();
+    } else {
+      //make the button red because it cannot update.
+      document.getElementById('uSW').classList.remove('uButtonGreen');
+      document.getElementById('uSW').classList.add('uButtonRed');
+      document.getElementById('uSW').innerHTML = 'Unable to update<br>No serviceWorkers active.';
+    }
   }
 
   //now grey out the button so it doesn't get spammed.
@@ -181,7 +188,7 @@ function updateSWresult() {
     say it is up to date, e would be popup cannot update.
     anything else should have put a popup up already :D
   */
-  if (isUpdating === 0 && gUpdating === 0) {
+  if ((isUpdating === 0 || isUpdating === 'a' ) && (gUpdating === 0 || gUpdating === 'a')) {
     upNotCheck('No new updates found.');
   }
   else if (isUpdating === 'e' || gUpdating === 'e') {
@@ -197,14 +204,8 @@ function upNotCheck(msg) {
     if (msg.length < 3) {
       if (msg === 'i') {
         if (isUpdating === 'u') {
-          upNotOpen(
-            'update installed! '
-            + '<button class="uButtons uButtonGreen"'
-            + ' type="button"'
-            + ' onclick="reloadDrFreeman()">Restart</button>'
-            + '<br><br>scroll up to see what&apos;s new:'
-            , appCL
-          );
+          // replace the changelog with the newest verion.
+          fReplaceSimple("texts.js", "texts", "upNotUpdate")
         }
         // only if the app files and globalscripts are all installed can the app be available offline.
         /*
@@ -249,6 +250,21 @@ function upNotOpen(msg, extras) {
   newWindow.style.top = (document.body.offsetHeight - (document.getElementById('unp').offsetHeight + document.getElementById('unp').offsetTop + 6)) + 'px';
   newWindow.style.height = (document.getElementById('unp').offsetHeight + document.getElementById('unp').offsetTop + 6) + 'px';
 }
+
+function upNotUpdate() {
+  //now that the changelog file is replaced, open the toast popup.
+  upNotOpen(
+    'update installed.<br>'
+    + '<button class="uButtons uButtonGreen"'
+    + ' type="button"'
+    + ' onclick="reloadDrFreeman()">Restart for updated version</button>'
+    + '<br><br>scroll up to see what&apos;s new:'
+    , appCL
+  );
+  //if this doesn't work, just don't bother with the changelog..
+  //put it back into upNotCheck just with the reload button.
+}
+
 function upSetClass(zElem) {
   var zElemChildList = zElem.children;
   for (var zChilds = 0; zChilds < zElemChildList.length; zChilds++) {
@@ -523,6 +539,9 @@ function filesLoadedCheck() {
     //make sure to only run this once :D
     if (!isLoaded) {
       isLoaded = 1;
+      //hopefully this will end all timers instead of having to clear them all individually.
+      //This happens on gitHub at least.
+      loadingVars = [];
       document.getElementById('loading').parentNode.removeChild(document.getElementById('loading'));
       Init();
     }
@@ -549,15 +568,35 @@ function fLoadSimple(zSrc, fileName) {
   firstScript.parentNode.insertBefore(zScript, firstScript);
 }
 
+function fReplaceSimple(zSrc, fileName, funky) {
+  /*
+    firstly, single out all the scripts in case a div or something
+    has the same ID
+  */
+  var zScripts = document.getElementsByTagName('script');
+  var oldScript;// = zScripts.getElementById(fileName);
+  // look for the old file name in the zScripts list
+  for (var scrpt in zScripts) {
+    if (zScripts[scrpt].id === fileName) {
+      oldScript = zScripts[scrpt];
+    }
+  }
+
+  if (oldScript) {
+    var newScript = document.createElement('script');
+    newScript.id = fileName + 'l';
+    newScript.src = zSrc;
+    newScript.addEventListener('load', function() {
+      this.id = this.id.slice(0, -1);
+      window[funky](); //call a function when the script is loaded/replaced.
+    });
+    oldScript.parentNode.replaceChild(newScript, oldScript)
+  }
+}
 /*
   true makes the window reload ignoring cache - load from server.
   HL3 confirmed XD
 */
 function reloadDrFreeman() {
   location.reload(true);
-  /* something like this to call it.
-  + '<button class="foodButton diaButton uButtonGreen"'
-  + ' type="button" style="width:5em;"'
-  + ' onclick="reloadDrFreeman()">Update</button>'
-  */
 }
