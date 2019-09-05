@@ -7,6 +7,7 @@ var globCL =
 + '<hr>'
 + '<p class="B C">5th September 2019</p> '
 + '<ul><li>' + zNew + 'tweaks and bugfixes for the new manual updating code.'
++ '</li><li>' + zBug + 'fixed a couple buttons that had onclick - they don&apos;t work on touchscreens..lol'
 + '</li></ul>'
 + '<hr>'
 + '<p class="B C">4th September 2019</p> '

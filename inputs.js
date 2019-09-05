@@ -409,9 +409,11 @@ function mouseClick() {
     }
 
     upNotOpen('webapp changeLog<br>' + updateButton, appCL);
-  } /*else if (targID.slice(0, 3) === 'vol') {
-    volDown();
-  } */else if (targID.slice(0, 4) === 'stor') { //storage question.
+  } else if (targID === 'grdf') {
+    reloadDrFreeman();// reload the webpage.
+  } else if (targID === 'uSW') {
+    updateServiceWorkers();// reload the webpage.
+  } else if (targID.slice(0, 4) === 'stor') { //storage question.
     storageChoose(targID.slice(-1));
     upNotClose();
   } else if (targID === 'fsI' || targID === 'fs') {//fullscreen button

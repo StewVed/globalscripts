@@ -79,9 +79,9 @@ function initServiceWorkers() {
             if (gUpdating === 'a') {
               gUpdating = 'u'; // u for updated.
               upNotCheck('Base files updated.<br>'
-              + '<button class="uButtons uButtonGreen"'
+              + '<button id="grdf" class="uButtons uButtonGreen"'
               + ' type="button"'
-              + ' onclick="reloadDrFreeman()">Restart for updated version</button>'
+              + '>Restart for updated version</button>'
               );
             }
             else {
@@ -255,9 +255,9 @@ function upNotUpdate() {
   //now that the changelog file is replaced, open the toast popup.
   upNotOpen(
     'update installed.<br>'
-    + '<button class="uButtons uButtonGreen"'
+    + '<button id="grdf" class="uButtons uButtonGreen"'
     + ' type="button"'
-    + ' onclick="reloadDrFreeman()">Restart for updated version</button>'
+    + '>Restart for updated version</button>'
     + '<br><br>scroll up to see what&apos;s new:'
     , appCL
   );
