@@ -38,17 +38,6 @@ var killFS = (document.exitFullscreen || document.mozCancelFullScreen || documen
 //vars to hold variables for the window
 , gameWindow = null
 
-//tooltip system adapted from Webtop project
-, vPup = null
-, vPupc = null
-, vPupD = null
-, vPupDc = null
-, vPupB = null
-
-, tooltipVars = {opac:0, over:false, was:null, is:null, text:'', timer:null}
-, toolTips = {
-  'ztest': 'tooltip text here.'
-}
 , LS1 = '@#~'
 , LS2 = '~#@'
 , saveY = 0 //whether the user allows saving to HTML5 local storage
@@ -96,8 +85,12 @@ function Init() {
     runApp();
   }
 
-  //add the tooltip elements:
-  tooltipsAdd();
+  // if this project has tooltips then:
+  if (typeof tooltipVars != 'undefined') {
+    //add the tooltip elements:
+    tooltipsAdd();
+  }
+
   //add my settings system to the project.
   settingsCreate();
 
@@ -108,22 +101,6 @@ function Init() {
   gamePadsButtonEventCheck();
 }
 
-
-function tooltipsAdd() {
-  document.body.innerHTML +=
-    '<div id="pupB" class="ttElem"></div>'
-  + '<div id="pup" class="ttElem"></div>'
-  + '<div id="pupc" class="ttElem"></div>'
-  + '<div id="pupD" class="ttElem"></div>'
-  + '<div id="pupDc" class="ttElem"></div>'
-  ;
-  //make links to the tooltip elements:
-  vPup = document.getElementById('pup');
-  vPupc = document.getElementById('pupc');
-  vPupD = document.getElementById('pupD');
-  vPupDc = document.getElementById('pupDc');
-  vPupB = document.getElementById('pupB');
-}
 function addEventListeners() {
   window.addEventListener('resize', resize, false);
   window.addEventListener('contextmenu', bubbleStop, false);

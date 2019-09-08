@@ -111,7 +111,6 @@ function mouseDown(e) {
     gameVars.gameObject = findObject(e);
   }
   mouseVars.button = null == e.which ? e.button : e.which;
-
   mouseVars.type = 'click';
   mouseVars.clickTimer = window.setTimeout(function() {
     mouseLongClick()
@@ -333,14 +332,17 @@ function mouseUp(e) {
     }
   }
 
-  //tooltip stuff for touch and click support
-  if (tooltipVars.over && vPup.style.opacity > 0 && !mouseVars.start.target.classList.contains('toolTipclass')) {
-    toolTipStuffHide(mouseVars.start.target.id);
-  } else if (mouseVars.start.target) {
-    if (mouseVars.start.target.classList) {
-      if (mouseVars.start.target.classList.contains('toolTipclass')) {
-        //show tooltip immediatly
-        toolTipShowNow(e, mouseVars.start.target.id);
+  //check for tooltips in this project:
+  if (typeof tooltipVars != 'undefined') {
+    //tooltip stuff for touch and click support
+    if (tooltipVars.over && vPup.style.opacity > 0 && !mouseVars.start.target.classList.contains('toolTipclass')) {
+      toolTipStuffHide(mouseVars.start.target.id);
+    } else if (mouseVars.start.target) {
+      if (mouseVars.start.target.classList) {
+        if (mouseVars.start.target.classList.contains('toolTipclass')) {
+          //show tooltip immediatly
+          toolTipShowNow(e, mouseVars.start.target.id);
+        }
       }
     }
   }

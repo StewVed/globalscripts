@@ -1,3 +1,29 @@
+//tooltip system adapted from Webtop project
+var vPup = null
+, vPupc = null
+, vPupD = null
+, vPupDc = null
+, vPupB = null
+
+, tooltipVars = {opac:0, over:false, was:null, is:null, text:'', timer:null}
+, toolTips = {
+  'ztest': 'tooltip text here.'
+}
+;
+
+
+function tooltipsAdd() {
+  var zNames = ['pupB','pup','pupc','pupD','pupDc'];
+  for (var a in zNames) {
+    var newElement = document.createElement('div');
+    newElement.id = zNames[a];
+    newElement.className = 'ttElem';
+    document.body.appendChild(newElement);
+    //make a link to the tooltip elements:
+    window['vP' + zNames[a].slice(1,zNames[a].length)] = document.getElementById(zNames[a]);
+  }
+}
+
 function toolTipHide() {
   window.setTimeout(function() {
     toolTipHide2()
