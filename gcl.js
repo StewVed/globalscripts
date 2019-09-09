@@ -8,6 +8,7 @@ var globCL =
 + '<p class="B C">9th September 2019</p> '
 + '<ul><li>' + zNew + 'added option (always on at the moment) to check for updates on each loading of the app.'
 + '</li><li>' + zBug + 'a couple of bigfixes relating to tooltip code changes preventing scrolling.'
++ '</li><li>' + zBug + 'links should work once more in settings, and also open in a new window.'
 + '</li></ul>'
 + '<hr>'
 + '<p class="B C">8th September 2019</p> '
