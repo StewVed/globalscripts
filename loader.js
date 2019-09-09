@@ -4,8 +4,15 @@
  * does not appear to work on GitHub at the moment though.
 */
 
+/*
+  Have a development mode based on whether the ip is local or not.
+  127.0.0.1 is generally a computer's local ip address.
+  Use window.location.hostname as I think that is just the base ip address
+*/
+var dev = (window.location.hostname == "127.0.0.1" || window.location.hostname == '')
+
 //text shortcodes put here in case the app's text loads before gtexts.
-var zAll = '<span class="B'
+  , zAll = '<span class="B'
   , zNew = zAll + ' Bl">New Stuff: </span>'
   , zImp = zAll + ' Gr">Improvement: </span>'
   , zBug = zAll + ' Re">Bug-Fix: </span>'
@@ -24,14 +31,8 @@ var zAll = '<span class="B'
   , gs = baseIP + '/globalscripts/'//for general stuff, like images and scripts.
   , isUpdating = 0 // to see if a serviceWorker is installing or updating.
   , gUpdating = 0 // globalscripts serviceWorker active (a) | installed (i) | updated (u) | error (e)
+  , upFreq = 1 //the frequency of looking for updates to the serviceworkers 1 = on every load.
 ;
-
-/*
-  Have a development mode based on whether the ip is local or not.
-  127.0.0.1 is generally a computer's local ip address.
-  Use window.location.hostname as I think that is just the base ip address
-*/
-var dev = (window.location.hostname == "127.0.0.1" || window.location.hostname == '');
 
 if (!dev) {
   initServiceWorkers();
@@ -43,7 +44,8 @@ if (!dev) {
   https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
   Also simply by looking at the stuff in Chrome's Development tools environment while paused!
 */
-var aSWR, gSWR; //to hold the serviceworker registrations.
+var aSWR, gSWR; //to hold the serviceworker registrations for manually updating later.
+
 function initServiceWorkers() {
   if ('serviceWorker' in navigator) {
     //Register the globalscripts serviceworker to cache all global files.
@@ -91,6 +93,11 @@ function initServiceWorkers() {
           }
         });
       });
+      //make the serviceWorker check for updates here.
+      //this doesn't seem to happen on it's own.
+      if (gUpdating === 'a' && upFreq === 1) {
+        gregistration.update();
+      }
     }).catch(function(err) {
       gUpdating = 'e' // e for error.
       console.log('GS SW registration failed: ', err)
@@ -120,7 +127,12 @@ function initServiceWorkers() {
             }
           }
         });
-      });
+      })
+      //make the serviceWorker check for updates here.
+      //this doesn't seem to happen on it's own.
+      if (isUpdating === 'a' && upFreq === 1) {
+        registration.update();
+      }
     }).catch(function(err) {
       isUpdating = 'e'
       console.log('ServiceWorker registration failed: ', err)
@@ -144,24 +156,25 @@ function updateServiceWorkers() {
   */
   if (document.getElementById('uSW').classList.contains('uButtonGreen')) {
     if (gSWR && aSWR) {
-      //reset the vars for installing state of the serviceWorkers:
+      //reset the vars for the state of the serviceWorkers:
       isUpdating = aSWR.active ? 'a' : 0;
       gUpdating = gSWR.active ? 'a' : 0;
-      //mouseVars.button = null == e.which ? e.button : e.which;
       //call the update function of the serviceWorker registrations:
+      //note: these seem to only update one each restart of the app!
+      /*
+        Let's try updating one then updating the other a second later?
+      */
       gSWR.update();
-      aSWR.update();
-    } else {
-      //make the button red because it cannot update.
-      document.getElementById('uSW').classList.remove('uButtonGreen');
-      document.getElementById('uSW').classList.add('uButtonRed');
-      document.getElementById('uSW').innerHTML = 'Unable to update<br>No serviceWorkers active.';
+      window.setTimeout(function() {
+        aSWR.update();
+      }, 1000);
     }
   }
 
   //now grey out the button so it doesn't get spammed.
   document.getElementById('uSW').classList.remove('uButtonGreen');
   document.getElementById('uSW').classList.add('uButtonGrey');
+  document.getElementById('uSW').innerHTML = 'Checking...';
 
   /*
     so, how to tell the user whether there is an update?
@@ -179,12 +192,12 @@ function updateServiceWorkers() {
 
   window.setTimeout(function() {
     updateSWresult();
-  }, 2000);
+  }, 3000);
 }
 
 function updateSWresult() {
   /*
-    after say 2 seconds, then if is/gUpdating are 0, then
+    after say 3 seconds, then if is/gUpdating are 0, then
     say it is up to date, e would be popup cannot update.
     anything else should have put a popup up already :D
   */

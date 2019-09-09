@@ -133,13 +133,17 @@ function mouseDown(e) {
   }
 
   bubbleStop(e);
-  //mouse down events can go here, or point to another function
-  //look for tooltip
-  if (targ.classList.contains('toolTipclass')) {
-    tooltipVars.over = true;
-    toolTipOver(targ.id);
-    toolTipSort(targ.id, 1);
+
+  // if this project has tooltips then:
+  if (typeof tooltipVars != 'undefined') {
+    //look for tooltip
+    if (targ.classList.contains('toolTipclass')) {
+      tooltipVars.over = true;
+      toolTipOver(targ.id);
+      toolTipSort(targ.id, 1);
+    }
   }
+
   //look for sliders here:
   var targSplit = targ.id.split('-');
   if (targ.id !== 'sli-pan-I') {
@@ -231,15 +235,17 @@ function mouseMove(e) {
   //then update current.
   mouseVars.current = {target:targ, time:zTime, x:e.clientX, y:e.clientY};
 
-  if (targ.classList.contains('toolTipclass')) {
-    toolTipOver(targ.id);
-    toolTipMouseMove(e);
-    tooltipVars.over = true;
-  } else if (tooltipVars.over && !targ.classList.contains('ttElem')) {
-    tooltipVars.over = false;
-    toolTipHide();
+  // if this project has tooltips then:
+  if (typeof tooltipVars != 'undefined') {
+    if (targ.classList.contains('toolTipclass')) {
+      toolTipOver(targ.id);
+      toolTipMouseMove(e);
+      tooltipVars.over = true;
+    } else if (tooltipVars.over && !targ.classList.contains('ttElem')) {
+      tooltipVars.over = false;
+      toolTipHide();
+    }
   }
-
 
   if (mouseVars.type === 'sli') {
     sliderMoveH();
