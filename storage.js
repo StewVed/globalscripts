@@ -31,7 +31,7 @@ function storageCheck() {
   }
 }
 function storageChoose(zChoice) {
-  if (zChoice == 'Y') {
+  if (zChoice === 'Y') {
     var a = saveY[0]
       , b = saveY[1];
     saveY = 1;
@@ -45,18 +45,22 @@ function storageChoose(zChoice) {
   upNotClose();
 }
 function storageLoad(toLoad) {
-  var dataToLoad = '';
-  try {
-    dataToLoad = localStorage.getItem(zAppPrefix + toLoad);
-  } catch (ex) {}
-  return dataToLoad;
+  if (saveY !== -1) {
+    var dataToLoad = '';
+
+    try {
+      dataToLoad = localStorage.getItem(zAppPrefix + toLoad);
+    } catch (ex) {}
+
+    return dataToLoad;
+  }
 }
 function storageSave(toSave, dataToSave) {
   //ONLY save if if is 1
-  if (saveY == 1) {
+  if (saveY === 1) {
     localStorage.setItem(zAppPrefix + toSave, dataToSave);
   }//check whether this is the first time the user has saved something:
-  else if (saveY == 0) {
+  else if (saveY === 0) {
     //nothing stored
     //check if the user has already got a notifyer yet:
     if (!document.getElementById('storY')) {

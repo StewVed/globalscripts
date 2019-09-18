@@ -92,7 +92,7 @@ function playButton() {
   newElem.classList = 'playOverlay';
 
   newElem.innerHTML =
-    '<div id="playButtons">' +
+    '<div id="playButtons" class="mid">' +
       //Play button
       '<div id="playB" class="uButtons uButtonGreen" style="font-size:3em;">&nbsp;Play&nbsp;</div>' +
       '<br><br>' +
