@@ -41,6 +41,9 @@ function soundPlay(a) {
 
 // example: soundBeep('sine', 500, 1, 100);setTimeout(function(){soundBeep('sine', 750, 1, 100)}, 100);
 function soundBeep(type, frequency, volume, duration) {
+  if (isMuted) {
+    return;
+  }
   //make the entire game queiter.
   //create a HTML5 audio occilator thingy
   var zOscillator = audioCtx.createOscillator();
@@ -95,7 +98,7 @@ function playButton() {
     '<div id="playButtons" class="mid">' +
       //Play button
       '<div id="playB" class="uButtons uButtonGreen" style="font-size:3em;">&nbsp;Play&nbsp;</div>' +
-      '<br><br>' +
+      '<br>' +
       /*
         mute/unmute toggler
         &#128266; &#x1F50A; - speaker with sound waves

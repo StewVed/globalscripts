@@ -73,8 +73,8 @@ ul {
 }
 .uButtons {
   text-align: center;
-  margin: 0 .2em;
-  padding: 0.15em 0.8em;
+  margin: 0.3em;
+  padding: 0.1em 0.75em;
   color: black;
   border: .1em solid black;
   border-radius: 5em;
@@ -125,7 +125,6 @@ ul {
   border-radius: 5em 0 0 5em;
   margin-right: 0;
   border-right: 0;
-  padding: .15em 0;
 }
 .uButtonMid {
   border-radius: 0;
@@ -133,13 +132,11 @@ ul {
   margin-right: 0;
   border-left: 0;
   border-right: 0;
-  padding: .15em 0;
 }
 .uButtonRight {
   border-radius: 0 5em 5em 0;
   margin-left: 0;
   border-left: 0;
-  padding: .15em 0;
 }
 .uB15 {
   width: 15%;
@@ -424,8 +421,8 @@ ul {
   text-align: center;
 }
 .mid {
-  top: 53%;
-  left: 65%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   position: relative;
 }

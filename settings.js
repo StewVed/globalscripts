@@ -24,10 +24,10 @@ function settingsCreate() {
     + '<div id="fs" class="uButtons uButtonGreen">'
       + '<span id="fsI" class="fsInner">&#9974;</span>&nbsp;Fullscreen'
     + '</div>'
-    + '<br><br>'
+    + '<br>'
     //volume slider:
     + volControl
-    + '<div id="bPrivacy" class="uButtons uButtonGrey">Privacy</div>'
+    + '<br><div id="bPrivacy" class="uButtons uButtonGrey">Privacy</div>'
     + '<div id="bChange" class="uButtons uButtonGrey">webapp changeLog</div>'
     + '<hr>' //Now for the Support buttons:
     + supportStewved
