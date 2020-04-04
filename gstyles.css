@@ -18,7 +18,7 @@ ul {
   color:red;
 }
 .Gr {
-  color:green;
+  color:lime;
 }
 .Bl {
   color:blue;
@@ -28,7 +28,15 @@ ul {
 }
 #cont {
   width: 100%;
+  position: relative;
+}
+#contC {
   position: absolute;
+  text-align: center;
+  box-sizing: border-box;
+  left: -100%;
+}
+
 }
 .tipButton {
   box-sizing: border-box;

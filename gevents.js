@@ -91,13 +91,12 @@ function resizeCenter(a, b) {
 function resize() {
   // call any custom resising code for the app
   resizeEvents();
-  /*
-  sooooon... use pure CSS scaling instead of javascript scaling!
-  --currently in development.
-  //try using the prototype CSS transform for scale and centering:
-  reScale();
-  return;
-*/
+
+  //prototype CSS transform for scale and centering:
+  if (document.getElementById('contC')) {
+    reScale();
+    return;
+  }
   //little fix for on-screen keyboards resizing screen space:
   if (document.activeElement.classList.contains('editEnable')) {
     //also could double-check by checking that the width hasn't changed:
@@ -425,19 +424,20 @@ function sliderColors(sliderPercent) {
 */
 
 function reScale() {
+  if (!initScreenWidth) {
+    return;
+  }
   //use this instead of resize() for making the app cneter and fill the available screen space.
 
-  //make sure the container's styles are correct - put these in CSS file if I use this version
-  //after prototype is prooven to work!
-  document.getElementById('cont').style.left = '50%';
-  document.getElementById('cont').style.top = '50%';
-  document.getElementById('cont').style.position = 'relative';
   //now for the scaling itself.
-    var xScale = initScreenWidth/screenWidth
-      , yScale = initScreenHeight/screenHeight
-    ;
-    var zScale = (xScale <= yScale) ? xScale : yScale;
-    var tScale = -50*zScale;
-    document.getElementById('cont').style.transform =
-    'scale('+zScale+') translate('+tScale+'%,'+tScale+'%)';
+  var xScale = window.innerWidth / initScreenWidth
+    , yScale = window.innerHeight / initScreenHeight
+  ;
+
+  var zScale = (xScale <= yScale) ? xScale : yScale;
+  var tScale = 50 / zScale;
+  document.getElementById('contC').style.transform =
+    'scale(' + zScale + ')'
+  + ' translate(-' + tScale + '%,-' + tScale + '%)';
+
 }

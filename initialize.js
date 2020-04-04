@@ -83,6 +83,15 @@ function Init() {
   }
   else {
     runApp();
+    /*
+      extra bit to center contC rescaling apps, because of all of the content is not
+      all on the screen, it squashes up so that it all fits horizontally.
+      it is set to -100% - fully off to the left on startup 
+    */
+    if (typeof document.getElementById('contC') != 'undefined') {
+      document.getElementById('contC').style.left = '50%';
+      document.getElementById('contC').style.top = '50%';
+    }
   }
 
   // if this project has tooltips then:
