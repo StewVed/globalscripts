@@ -205,7 +205,6 @@ function resizeCheckOrientation() {
 }
 
 function scroller(targ, zCloseButton, toScrollBy) {
-  //console.log(toScrollBy);
   var stopNow = 0;
   var zTop = (targ.offsetTop + toScrollBy);
   var tcTop = targ.parentNode.offsetTop;
@@ -220,6 +219,7 @@ function scroller(targ, zCloseButton, toScrollBy) {
     stopNow = 1;
 
   }
+
   targ.style.top = zTop + 'px';
 
 
@@ -246,6 +246,7 @@ function divScroller(targ, zCloseButton, zSpeed, zTime) {
   var tDiff = (tNow - zTime) / 1000;
   var newSpeed = zSpeed;
   var toScrollBy = (zSpeed * tDiff);
+
   if ((tDiff > 0) && (zSpeed != 0) && (toScrollBy < 1 && toScrollBy > -1)) {
     //scroll speed is too slow. Just stop the scrolling animation.
     return;
@@ -424,7 +425,7 @@ function sliderColors(sliderPercent) {
 */
 
 function reScale() {
-  if (!initScreenWidth) {
+  if (typeof initScreenWidth == 'undefined') {
     return;
   }
   //use this instead of resize() for making the app cneter and fill the available screen space.

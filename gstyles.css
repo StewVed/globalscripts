@@ -36,8 +36,6 @@ ul {
   box-sizing: border-box;
   left: -100%;
 }
-
-}
 .tipButton {
   box-sizing: border-box;
   box-shadow: 0 0 8px hsla(0,0%,0%,.5);
@@ -50,7 +48,6 @@ ul {
   color: black;
   border: 2px solid black;
   border-radius: 100%;
-  box-shadow: 0em 0em 1% 1% black;
   background: radial-gradient(circle at 25% 25%, hsl(0, 0%, 95%), hsl(0, 0%, 33%));
   transition: 0.7s;
 }
@@ -256,8 +253,9 @@ ul {
   from {left: 0%;}
   to {left: 75%;}
 }
-#toastContainer{
+#toastContainer {
   position: absolute;
+  bottom: 0;
   width: 100%;
   box-sizing: border-box;
   z-index: 64;

@@ -260,7 +260,7 @@ function upNotOpen(msg, extras) {
   '<div id="unp">' + msg + '</div>' + extras + '</div>';
 
   upSetClass(newWindow);
-  newWindow.style.top = (document.body.offsetHeight - (document.getElementById('unp').offsetHeight + document.getElementById('unp').offsetTop + 6)) + 'px';
+  //newWindow.style.top = (document.body.offsetHeight - (document.getElementById('unp').offsetHeight + document.getElementById('unp').offsetTop + 6)) + 'px';
   newWindow.style.height = (document.getElementById('unp').offsetHeight + document.getElementById('unp').offsetTop + 6) + 'px';
 }
 

@@ -18,6 +18,16 @@ function soundInit() {
   audioVolume = audioCtx.createGain();
   //now that the audio has ben initialized, run the app.
   runApp();
+  /*
+    extra bit to center contC rescaling apps, because of all of the content is not
+    all on the screen, it squashes up so that it all fits horizontally.
+    it is set to -100% - fully off to the left on startup 
+  */
+  //if (typeof document.getElementById('contC') != 'undefined') {
+  if  (document.getElementById('contC')) {
+    document.getElementById('contC').style.left = '50%';
+    document.getElementById('contC').style.top = '50%';
+  }
 }
 function soundVolUpdate() {
   audioVolume.gain.value = globVol;
