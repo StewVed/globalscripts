@@ -34,9 +34,11 @@ var dev = (window.location.hostname == "127.0.0.1" || window.location.hostname =
   , upFreq = 1 //the frequency of looking for updates to the serviceworkers 1 = on every load.
 ;
 
-if (!dev) {
+//perhaps when files are cached then window.location is local?
+//if (!dev) {
   initServiceWorkers();
-}
+//}
+
 //add service worker registration to the app:
 /*serviceworker (mostly) learned from:
   https://w3c.github.io/ServiceWorker/

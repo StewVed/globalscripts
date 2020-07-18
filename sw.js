@@ -1,4 +1,4 @@
-var zAppVersion = 'gs2020-04-05';
+var zAppVersion = 'gs2020-07-18';
 
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(zAppVersion).then(function(cache) {
